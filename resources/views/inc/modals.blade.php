@@ -1,0 +1,2 @@
+@section('modals')
+          @yield('modals')
