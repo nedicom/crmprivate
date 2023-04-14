@@ -11,12 +11,13 @@ class TasksRequest extends FormRequest
      *
      * @return bool
      */
-    //public function authorize()
-  //  {
-  //      return false;
-  //  }
+    public function authorize()
+    {
+        return true;
+    }
 
     /**
+     * TODO: нужно заполнить валидацию
      * Get the validation rules that apply to the request.
      *
      * @return array<string, mixed>

@@ -4,7 +4,6 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/resources/datetimepicker/jquery.datetimepicker.css">
-
     <style>
       .task-toggle {
         position: absolute;
@@ -37,21 +36,21 @@
 @endsection
 
 @section('leftmenuone')
-  <li class="nav-item text-center p-3">
-    <a class="text-white text-decoration-none" id="задача" href="#" onclick="Task(this.id)" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить задачу</a>
-  </li>
-  <li class="nav-item text-center p-3">
-    <a class="text-white text-decoration-none" id="консультация"  onclick="myTask(this.id)" href="#" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить консультацию</a>
-  </li>
-  <li class="nav-item text-center p-3">
-    <a class="text-white text-decoration-none" id="звонок" onclick="myTask(this.id)" href="#" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить звонок</a>
-  </li>
-  <li class="nav-item text-center p-3">
-    <a class="text-white text-decoration-none" id="заседание" onclick="myTask(this.id)" href="#" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить заседание</a>
-  </li>
-  <li class="nav-item text-center p-3">
-    <a class="text-white text-decoration-none" id="допрос" onclick="myTask(this.id)" href="#" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить допрос</a>
-  </li>
+    <li class="nav-item text-center p-3">
+        <a class="text-white text-decoration-none" id="задача" href="#" onclick="Task(this.id)" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить задачу</a>
+    </li>
+    <li class="nav-item text-center p-3">
+        <a class="text-white text-decoration-none" id="консультация"  onclick="myTask(this.id)" href="#" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить консультацию</a>
+    </li>
+    <li class="nav-item text-center p-3">
+        <a class="text-white text-decoration-none" id="звонок" onclick="myTask(this.id)" href="#" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить звонок</a>
+    </li>
+    <li class="nav-item text-center p-3">
+        <a class="text-white text-decoration-none" id="заседание" onclick="myTask(this.id)" href="#" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить заседание</a>
+    </li>
+    <li class="nav-item text-center p-3">
+        <a class="text-white text-decoration-none" id="допрос" onclick="myTask(this.id)" href="#" data-bs-toggle="modal" data-bs-target="#taskModal">Добавить допрос</a>
+    </li>
 @endsection
 
 @section('main')

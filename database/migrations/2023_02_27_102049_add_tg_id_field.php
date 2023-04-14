@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,8 +13,7 @@ return new class extends Migration
         });
 
         Schema::table('clients_models', static function (Blueprint $table) {
-            if (Schema::hasColumn('clients_models', 'tgid'))
-            {
+            if (Schema::hasColumn('clients_models', 'tgid')) {
                 $table->unsignedBigInteger('tgid')->nullable()->unique()->change();
             } else {
                 $table->unsignedBigInteger('tgid')->nullable()->unique();
