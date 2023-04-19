@@ -22,9 +22,7 @@
     @auth
         @include('inc.leftmenu')
 
-        <div style="margin-left: 13%; width: 86%;
-            min-height:1000px;
-            background: linear-gradient(to right, #F0F8FF, #FFF);">
+        <div style="margin-left: 13%; width: 86%;min-height:1000px;background: linear-gradient(to right, #F0F8FF, #FFF);">
             @include('inc.navauth')
             @include('inc.maincontent')
 

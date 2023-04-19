@@ -8,7 +8,6 @@ use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\LawyersController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\LeadsController;
-
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\SourceController;
@@ -17,6 +16,11 @@ use App\Http\Controllers\GetclientAJAXController;
 use App\Http\Controllers\TaskAJAXController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\CalendarController;
+use Illuminate\Support\Facades\Auth;
+
+Auth::routes();
+
+Route::get('/verify/{token}', 'Auth\RegisterController@verify')->name('register.verify');
 
 Route::post('/bots/staff', \App\Http\Controllers\Bots\StaffController::class)->name('bots.staff');
 Route::post('/bot', [BotController::class, 'index'])->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class])->name('bot');
@@ -27,14 +31,10 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
-Route::get('/logout', function () {
-    return redirect('/login');
-});
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::get('/contacts', function () {return view('contacts');})->middleware('auth');
 
-//CalDav for yandex and other
+// CalDav for yandex and other
 Route::controller(CalendarController::class)->group(function () {
     Route::get('/calendar/{lawyerid}', 'calendar')->name('calendar');
 });
@@ -105,25 +105,12 @@ Route::middleware(['verified'])->group(function () {
 
     Route::get('/lawyers', [LawyersController::class, 'Alllawyers'])->name('lawyers');
     Route::post('/lawyers/add', [LawyersController::class, 'submit'])->name('add-lawyer');
-});
 
+    Route::resource('users', \App\Http\Controllers\UsersController::class);
+    Route::post('/users/{user}/verify', 'UsersController@verify')->name('users.verify');
+    Route::put('/users/{user}/change-password', [\App\Http\Controllers\UsersController::class, 'changePassword'])->name('users.change-password');
+});
 
 Route::POST('/getclient', [GetclientAJAXController::class, 'getclient'])->name('getclient')->middleware('auth');
 
 Route::post('/setstatus', [TaskAJAXController::class, 'setstatustask'])->name('setstatus');
-
-Route::get('/email/verify', function () {
-    return view('auth/verify');
-})->middleware('auth')->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Ссылка для верификации отправлена');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-Auth::routes();

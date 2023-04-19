@@ -28,4 +28,24 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+    // Фильтр по дате/выбору пользователя на Главной странице в админке
+    $('.input-home-filter').on('change', function () {
+        $('#form-filter').submit();
+    });
+
+    // Копирование ссылки на Главной странцие в админке
+    $('#btnurl').on('click', function () {
+        // Get the text field
+        var copyText = document.getElementById("calendarurl");
+        // Select the text field
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+        // Alert the copied text
+        document.getElementById("btnurl").innerText = 'ссылка скопирована';
+    });
 });

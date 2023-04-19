@@ -32,7 +32,7 @@ class DealRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'description' => 'string|max:500',
+            'description' => 'string|max:500|nullable',
             'clientId' => 'required|integer',
             'lawyerId' => 'required|integer',
         ];

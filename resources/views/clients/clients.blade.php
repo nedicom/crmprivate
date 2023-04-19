@@ -81,7 +81,6 @@
                       </div>
                   </div>
               </div>
-
               <!-- Список задач -->
               <div class="row">
                   <h6 style="text-align: center;">Задачи не закрепленные к делам</h6>

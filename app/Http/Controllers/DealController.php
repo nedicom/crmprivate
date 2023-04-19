@@ -9,18 +9,6 @@ use App\Http\Requests\DealRequest;
 class DealController extends Controller
 {
     /**
-     * @param DealRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(DealRequest $request)
-    {
-        $deal = Deal::new($request);
-        $deal->save();
-
-        return redirect()->back()->with('success', 'Все в порядке, дело добавлено');
-    }
-
-    /**
      * Детальная страница дела
      * @param int $id
      * @return mixed
@@ -31,6 +19,19 @@ class DealController extends Controller
         $datalawyers = User::all();
 
         return view('deal/deal_by_id', compact('deal','datalawyers'));
+    }
+
+    /**
+     * Сохранение данных
+     * @param DealRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(DealRequest $request)
+    {
+        $deal = Deal::new($request);
+        $deal->save();
+
+        return redirect()->back()->with('success', 'Дело добавлено.');
     }
 
     /**
@@ -45,7 +46,7 @@ class DealController extends Controller
         $deal->edit($request);
         $deal->save();
 
-        return redirect()->route('deal.show', $id)->with('success', 'Все в порядке, дело обновлено');
+        return redirect()->route('deal.show', $id)->with('success', ($deal->isDirty()) ? 'Дело обновлено.' : 'Данные остались прежними.');
     }
 
     /**
@@ -57,6 +58,6 @@ class DealController extends Controller
     {
         Deal::find($id)->delete();
 
-        return redirect()->route('clients')->with('success', 'Все в порядке, дело удалено');
+        return redirect()->route('clients')->with('success', 'Дело удалено.');
     }
 }
