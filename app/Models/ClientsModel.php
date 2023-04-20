@@ -41,7 +41,7 @@ class ClientsModel extends Model
     }
 
     /**
-     * Список дел Клиента
+     *  Relation Deals
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function deals()

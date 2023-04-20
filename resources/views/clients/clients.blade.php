@@ -92,17 +92,21 @@
                       @endforeach
                       @include('/clients/_card_add_task')
                   </div><!-- .d-flex.flex-wrap -->
-                  @if ($client->tasksFunc()->whereNotNull('deal_id')->count() > 0)
-                      <hr class="bg-dark-lighten my-3">
-                      <h6 style="text-align: center;">Задачи закрепленные к делам</h6>
-                      <div class="d-flex flex-wrap">
-                          @foreach ($client->tasksFunc()->whereNotNull('deal_id')->get() as $task)
-                              @if ($task->status !== 'выполнена')
-                                  @include('/clients/_card_task')
-                              @endif
-                          @endforeach
-                          @include('/clients/_card_add_task')
-                      </div>
+                  @if ($client->deals()->count() > 0)
+                      @foreach ($client->deals()->get() as $deal)
+                          @if ($deal->tasks()->count() > 0)
+                              <hr class="bg-dark-lighten my-3">
+                              <h6 style="text-align: center;">Дело: <a href="{{ route("deal.show", ['id' => $deal->id]) }}" target="_blank">{{ $deal->name }}</a></h6>
+                              <div class="d-flex flex-wrap">
+                                  @foreach ($deal->tasks()->orderBy('deal_id')->get() as $task)
+                                      @if ($task->status !== 'выполнена' && $task->clientid == $client->id)
+                                          @include('/clients/_card_task')
+                                      @endif
+                                  @endforeach
+                                  @include('/clients/_card_add_task')
+                              </div>
+                          @endif
+                      @endforeach
                   @endif
               </div>
             </div><!-- .card.row -->

@@ -7,6 +7,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
+/**
+ * @property int $id
+ * @property string $client
+ * @property string $name
+ * @property string $lawyer
+ * @property string $date
+ * @property string $status
+ * @property double $duration
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $clientid
+ * @property string $hrftodcm
+ * @property string $tag
+ * @property int $soispolintel
+ * @property int $postanovshik
+ * @property string $description
+ * @property string $donetime
+ * @property string $type
+ * @property boolean $new
+ * @property int $deal_id
+ */
 class Tasks extends Model
 {
     const STATUS_WAITING = 'ожидает';
@@ -35,13 +56,18 @@ class Tasks extends Model
     }
 
     /**
-     * Получить дело
+     * Inversion relation Deal
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function deal()
     {
         return $this->belongsTo(Deal::class, 'deal_id', 'id');
     }
 
+    /**
+     * Inversion relation Client
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function clientsModel()
     {
         return $this->belongsTo(ClientsModel::class, 'clientid', 'id');

@@ -55,8 +55,21 @@ class Deal extends Model
         $this->user_id = $request->lawyerId;
     }
 
+    /**
+     * Relation user
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relation Tasks
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Tasks::class, 'deal_id', 'id');
     }
 }

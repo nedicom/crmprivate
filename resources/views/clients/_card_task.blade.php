@@ -20,17 +20,6 @@
             data-bs-toggle="tooltip" data-bs-placement="top" title="выполнена">
     </div>
     <div class="px-1 fw-normal bg-white border border-white"  style="min-height: 80px;overflow: hidden; position: relative;">
-        @if (!empty($task->deal))
-            <div class="d-flex p-2 justify-content-between align-items-center" style="padding-left: 0!important;">
-                <span>
-                    <a href="{{ route("deal.show", ['id' => $task->deal->id]) }}" style="font-size: 14px;!important" target="_blank">{{ $task->deal->name }}</a>
-                </span>
-                <span>
-                    <img src="{{ url($task->deal->user->avatar) }}" class="rounded-circle" style="width:30px;height:30px"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{{ $task->deal->user->name }}">
-                </span>
-            </div>
-        @endif
         <a href="/tasks/{{ $task->id }}" style="font-size: 14px;!important" target="_blank">{{ $task->name }}</a>
     </div>
 </div>
