@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\LawyersController;
@@ -17,6 +15,7 @@ use App\Http\Controllers\TaskAJAXController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\CalendarController;
 use Illuminate\Support\Facades\Auth;
+use \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
 Auth::routes();
 
@@ -45,12 +44,8 @@ Route::middleware(['verified'])->group(function () {
     });
 
     Route::controller(DogovorController::class)->group(function () {
-        Route::post('/dogovor/add', 'addDogovor')->name('addDogovor');
-    });
-
-    Route::controller(DogovorController::class)->group(function () {
-        Route::get('/dogovor', 'dogovor')->name('dogovor');
-        Route::post('/dogovor/add', 'adddogovor')->name('adddogovor');
+        Route::get('/contracts', 'index')->name('contracts.index');
+        Route::post('/dogovor/add', 'store')->name('adddogovor');
         Route::get('/dogovor/{id}', 'showdogovorById')->name('showdogovorById');
         Route::post('/dogovor/{id}/edit', 'dogovorUpdateSubmit')->name('dogovorUpdateSubmit');
     });
@@ -70,11 +65,11 @@ Route::middleware(['verified'])->group(function () {
     });
 
     Route::controller(ClientsController::class)->group(function () {
-        Route::get('/clients', 'AllClients')->name('clients');
-        Route::post('/clients/add', 'submit')->name('add-client');
-        Route::get('/clients/{id}', 'showClientById')->name('showClientById');
-        Route::post('/clients/{id}/edit', 'updateClientSubmit')->name('Client-Update-Submit');
-        Route::get('/clients/{id}/delete', 'ClientDelete')->name('Client-Delete');
+        Route::get('/clients', 'index')->name('clients');
+        Route::post('/clients/add', 'store')->name('add-client')->withoutMiddleware([ConvertEmptyStringsToNull::class]);
+        Route::get('/clients/{id}', 'show')->name('showClientById');
+        Route::post('/clients/{id}/edit', 'update')->name('Client-Update-Submit');
+        Route::get('/clients/{id}/delete', 'delete')->name('Client-Delete');
     });
 
     Route::controller(TasksController::class)->group(function () {

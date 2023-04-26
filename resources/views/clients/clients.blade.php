@@ -83,7 +83,9 @@
               </div>
               <!-- Список задач -->
               <div class="row">
-                  <h6 style="text-align: center;">Задачи не закрепленные к делам</h6>
+                  @if ($client->deals()->count() === 0)
+                      <h6 style="text-align: center;">Задачи не закрепленные к делам</h6>
+                  @endif
                   <div class="d-flex flex-wrap">
                       @foreach ($client->tasksFunc()->where('deal_id', '=', null)->get() as $task)
                           @if ($task->status !== 'выполнена')

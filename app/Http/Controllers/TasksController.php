@@ -9,112 +9,103 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TasksRequest;
 use App\Models\Tasks;
 use App\Models\User;
-use App\Models\Deal;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Repository\TaskRepository;
 
 class TasksController extends Controller
 {
+    private $repository;
+
+    public function __construct(TaskRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function index(Request $request)
     {
         $lawyerfilter = $typefilter = null;
         $checkedlawyer = $type = null;
-        $calendar = $request->input('calendar'); //month, year, day
-        if($request->input('checkedlawyer')){$lawyerfilter='lawyer'; $checkedlawyer = $request->input('checkedlawyer');} //lawyer
-        if($request->input('type')){$typefilter='type'; $type = $request->input('type');} //type
+        $calendar = $request->input('calendar'); // Month, year, day
+        if ($request->input('checkedlawyer')) { $lawyerfilter = 'lawyer'; $checkedlawyer = $request->input('checkedlawyer'); } // Lawyer
+        if ($request->input('type')) { $typefilter = 'type'; $type = $request->input('type'); } // Type
+        $fields = compact('lawyerfilter','checkedlawyer', 'typefilter', 'type');
 
+        // Фильтр по календарю
         if ($calendar == 'week') {
-            return view ('tasks/tasks', ['data' => Tasks::select("*")
-                ->whereBetween('date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-                ->where($lawyerfilter, '=', $checkedlawyer)
-                ->where($typefilter, '=', $type)
-                ->orderBy('date', 'asc')
-                ->get()],
-                ['datalawyers' =>  User::all()]
-            );
-        } elseif ($calendar == 'day') {
-            return view ('tasks/tasks', ['data' => Tasks::select("*")
-                ->whereBetween('date', [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()])
-                ->where($lawyerfilter, '=', $checkedlawyer)
-                ->where($typefilter, '=', $type)
-                ->orderBy('date', 'asc')
-                ->get()],
-                ['datalawyers' =>  User::all()]
-            );
+            return view ('tasks/tasks', [
+                'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek(), $fields),
+            ], [
+                'datalawyers' => User::all()
+            ]);
+        } else if ($calendar == 'day') {
+            return view ('tasks/tasks', [
+                'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfDay(), Carbon::now()->endOfDay(), $fields),
+            ], [
+                'datalawyers' =>  User::all()
+            ]);
         } elseif ($calendar == 'month') {
-              if ($addmonts = $request->input('months')) {
-                  $addmonts = ($request->input('months'));
+              if ($month = $request->input('months')) {
+                  $month = ($request->input('months'));
               } else {
-                  $addmonts = ((Carbon::now()->month)-1);
+                  $month = ((Carbon::now()->month) - 1);
               }
-
-              return view ('tasks/tasks', ['data' => Tasks::select("*")
-                  ->whereBetween('date', [Carbon::now()->startOfYear()->addMonth($addmonts), Carbon::now()->startOfYear()->addMonth($addmonts+1)])
-                  ->where($lawyerfilter, '=', $checkedlawyer)
-                  ->where($typefilter, '=', $type)
-                  ->orderBy('date', 'asc')
-                  ->get()],
-                  ['datalawyers' =>  User::all()]
-              );
+              return view ('tasks/tasks', [
+                  'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfYear()->addMonth($month), Carbon::now()->startOfYear()->addMonth($month + 1), $fields),
+              ], [
+                  'datalawyers' =>  User::all()
+              ]);
         } else {
-            return view ('tasks/tasks', ['data' => Tasks::select("*")
-                ->where($lawyerfilter, '=', $checkedlawyer)
-                ->where($typefilter, '=', $type)
-                ->orderBy('date', 'asc')
-                ->get()],
-                ['datalawyers' =>  User::all()]
-            );
+            return view ('tasks/tasks', [
+                'data' => $this->repository->getAll($fields),
+            ], [
+                'datalawyers' =>  User::all()
+            ]);
         }
     }
 
-    public function create(TasksRequest $req)
+    /**
+     * Создание задачи
+     * @param TasksRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Throwable
+     */
+    public function create(TasksRequest $request)
     {
-        $task = new Tasks();
-        $task->name = $req->nameoftask;
-        $task->client = $req->client;
-        $task->date = $req->date;
-        $task->lawyer = $req->lawyer;
-        $task->duration = $req->duration;
-        $task->clientid = $req->clientidinput;
-        $task->deal_id = ($req->deals !== null) ? $req->deals : null;
-        $task->new = 1;
-        if($req -> hrftodcm){$task->hrftodcm = $req->hrftodcm;};
-        if($req -> type){$task->type = $req->type;};
-
-        $task->postanovshik = Auth::user()->id;
-        if($req->tag){$task->tag = $req->tag;};
-        if($req->soispolintel){$task->soispolintel = $req->soispolintel;};
-        if($req->description){$task->description = $req->description;};
-        $task->status = 'ожидает';
-
-        $task->save();
-
+        $task = Tasks::new($request);
+        $task->saveOrFail();
+        // Events
         TaskCreated::dispatch($task);
 
-        return redirect()->back()->with('success', 'Все в порядке, событие добавлено');
+        return redirect()->back()->with('success', 'Все в порядке, задача добавлена.');
     }
 
+    /**
+     * Закрепление тега
+     * @param Request $request
+     * @return void
+     */
     public function tag(Request $request)
     {
         if ($request->get('id')) {
             $id = $request->get('id');
             $task = Tasks::find($id);
-            $task -> tag = $request->get('value');
-            $task -> save();
+            $task->tag = $request->get('value');
+            $task->save();
         }
     }
 
     /**
-     * Детальная страница задача
+     * Детальная страница задачи
      * @param $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function showTaskById($request)
     {
+        /** @var Tasks $task */
         $task = Tasks::find($request);
-
         if ($task->lawyer == Auth::user()->id) {
-           $task->new = 0;
+           $task->new = $task::STATE_OLD;
            $task->save();
         }
 
@@ -122,35 +113,19 @@ class TasksController extends Controller
     }
 
     /**
-     * Редактирование задачи
+     * Обновление задачи
      * @param int $id
-     * @param TasksRequest $req
+     * @param TasksRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function editTaskById(int $id, TasksRequest $req)
+    public function editTaskById(int $id, TasksRequest $request)
     {
+        /** @var Tasks $task */
         $task = Tasks::find($id);
-
-        $task->name = $req->nameoftask;
-        $task->client = $req->client;
-        $task->date = $req->date;
-        $task->lawyer = $req->lawyer;
-        $task->duration = $req->duration;
-        $task->status = $req->status;
-        $task->deal_id = ($req->deals !== null) ? $req->deals : null;
-
-        if($req->tag){$task->tag = $req->tag;};
-        if($req->postanovshik){$task->postanovshik = $req->postanovshik;};
-        if($req->soispolintel){$task->soispolintel = $req->soispolintel;};
-        if($req->description){$task->description = $req->description;};
-
-        if($req->hrftodcm){$task->hrftodcm = $req->hrftodcm;};
-        if($req->type){$task -> type = $req->type;};
-        if($req->clientidinput){$task->clientid = $req->clientidinput;};
-
+        $task->edit($request);
         $task->save();
-
-        if ($task->status === 'выполнена') {
+        // Events
+        if ($task->status === $task::STATUS_COMPLETE) {
             TaskCompleted::dispatch($task);
         }
 

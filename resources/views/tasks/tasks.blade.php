@@ -210,7 +210,6 @@
                           @include('inc.calendar.task')
                         @endif
                     @endforeach
-
               </div>
             @endfor
           </div>

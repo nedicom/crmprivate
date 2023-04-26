@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use App\Http\Requests\TasksRequest;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property int $id
  * @property string $client
  * @property string $name
  * @property string $lawyer
- * @property string $date
+ * @property \DateTime $date
  * @property string $status
  * @property double $duration
  * @property int $created_at
@@ -23,7 +25,7 @@ use Carbon\Carbon;
  * @property int $soispolintel
  * @property int $postanovshik
  * @property string $description
- * @property string $donetime
+ * @property \DateTime $donetime
  * @property string $type
  * @property boolean $new
  * @property int $deal_id
@@ -33,10 +35,15 @@ class Tasks extends Model
     const STATUS_WAITING = 'ожидает';
     const STATUS_OVERDUE = 'просрочена';
     const STATUS_IN_WORK = 'в работе';
+    const STATUS_COMPLETE = 'выполнена';
+
+    const STATE_NEW = 1;
+    const STATE_OLD = 0;
 
     use HasFactory;
 
-    protected $fillable = ['*'];
+    //protected $fillable = ['*'];
+    protected $guarded = [];
 
     protected function date(): Attribute
     {
@@ -53,6 +60,36 @@ class Tasks extends Model
                 'currentHour' => Carbon::parse($value)->format('H'),
             ],
         );
+    }
+
+    /**
+     * @param TasksRequest $request
+     * @return Tasks
+     */
+    public static function new(TasksRequest $request): self
+    {
+        $task = new self();
+        $task->fill($request->except(['nameoftask', 'clientidinput', 'deals', '_token']));
+        $task->name = $request->nameoftask;
+        $task->clientid = $request->clientidinput;
+        $task->deal_id = ($request->deals !== null) ? $request->deals : null;
+        $task->new = static::STATE_NEW;
+        $task->postanovshik = Auth::user()->id;
+        $task->status = static::STATUS_WAITING;
+
+        return $task;
+    }
+
+    /**
+     * @param TasksRequest $request
+     * @return void
+     */
+    public function edit(TasksRequest $request): void
+    {
+        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', '_token']));
+        $this->name = $request->nameoftask;
+        $this->clientid = $request->clientidinput;
+        $this->deal_id = ($request->deals !== null) ? $request->deals : null;
     }
 
     /**

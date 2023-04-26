@@ -20,6 +20,7 @@ yarn-error.log
 /.vscode
 /bootstrap/ssr
 /vendor
+/backup
 .env.production
 /.fleet
 

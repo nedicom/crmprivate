@@ -25,7 +25,9 @@ class ClientsRequest extends FormRequest
     {
         return [
             'phone' => 'required|min:9|max:50',
-            'name' => 'required'
+            'name' => 'required|string',
+            'email' => 'email|string|nullable',
+            'address' => 'string|max:250|nullable',
         ];
     }
 
@@ -35,10 +37,10 @@ class ClientsRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'name.required' => 'Имя обязательно',
             'phone.required' => 'Телефон обязателен',
             'phone.min' => 'Телефон должен быть больше 9 цифр',
             'phone.max' => 'Телефон должен быть меньше 50 цифр',
-            'name.required' => 'Имя обязательно'
         ];
     }
 }
