@@ -8,7 +8,7 @@ use App\Models\Tasks;
 use Carbon\Carbon;
 
 class TaskAjaxController extends Controller{
-    
+
     public function setstatustask(Request $request){
 
       if ( !($request->get('status') == 0) ){
@@ -20,7 +20,7 @@ class TaskAjaxController extends Controller{
           elseif($status=='inwork'){$statuscard='в работе';}
           elseif($status=='finished'){
             $statuscard='выполнена';
-            $task -> donetime = Carbon::now();          
+            $task -> donetime = Carbon::now();
           }
           else{$statuscard='код не сработал';}
 
@@ -37,16 +37,16 @@ class TaskAjaxController extends Controller{
         $date2 = date_create($date);
 
         $dayofweekcalendar = $request->get('dayofweek');
-        $dayofweektask = date('w', strtotime($date));      
+        $dayofweektask = date('w', strtotime($date));
 
         $day = $dayofweekcalendar - $dayofweektask;
 
         $newdate = date_add($date2, date_interval_create_from_date_string($day." days"));
         $newdate2 = date_format($newdate, DATE_RFC2822);
-        
+
         $task = Tasks::find($id);
         $task -> date = $newdate;
-        $task -> save();        
+        $task -> save();
       }
 
       if( !($request->get('dayofmonth') == 0) ){
@@ -57,17 +57,17 @@ class TaskAjaxController extends Controller{
         $date2 = date_create($date);
 
         $dayofmonth = $request->get('dayofmonth');
-        $dayofmonthtask = date('d', strtotime($date));      
+        $dayofmonthtask = date('d', strtotime($date));
 
         $day = $dayofmonth - $dayofmonthtask;
 
         $newdate = date_add($date2, date_interval_create_from_date_string($day." days"));
         $newdate2 = date_format($newdate, DATE_RFC2822);
-        
+
         $task = Tasks::find($id);
         $task -> date = $newdate;
         $task -> save();
-        return ($newdate2);        
+        return ($newdate2);
       }
 
       if( !($request->get('hourofday') == 0) ){
@@ -77,7 +77,7 @@ class TaskAjaxController extends Controller{
         $task = Tasks::find($id);
         $task -> date = $newhour;
         $task -> save();
-        return ($newhour);        
+        return ($newhour);
       }
 
       if(($request->get('checkedvipolnena') == 'true') ){
@@ -87,7 +87,7 @@ class TaskAjaxController extends Controller{
         $task -> new = 0;
         $task -> save();
         $checkedvipolnena = $request->get('checkedvipolnena');
-        return ($checkedvipolnena);        
+        return ($checkedvipolnena);
       }
 
       if(($request->get('checkedvipolnena') == 'false') ){
@@ -96,9 +96,9 @@ class TaskAjaxController extends Controller{
         $task -> status = 'ожидает';
         $task -> save();
         $checkedvipolnena = $request->get('checkedvipolnena');
-        return ($checkedvipolnena);        
+        return ($checkedvipolnena);
       }
-      
-    else{};
+
+      else{};
     }
 }

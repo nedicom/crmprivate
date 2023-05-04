@@ -2,10 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Notifications\Messages\MailMessage;
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Models\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,12 +25,13 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        $this->registerPermissions();
+    }
 
-        VerifyEmail::toMailUsing(function ($notifiable, $url) {
-        return (new MailMessage)
-            ->subject('Подтверждение адреса на crm.nedicom.ru')
-            ->line('Вы почти у цели. Чтобы подтвердить адрес почты нажмите на кнопку ниже.')
-            ->action('Подтвердить адрес', $url);
-    });
+    private function registerPermissions(): void
+    {
+        Gate::define('manage-users', function (User $user) {
+            return $user->isAdmin() || $user->isModerator();
+        });
     }
 }

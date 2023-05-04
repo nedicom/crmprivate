@@ -3,79 +3,51 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Services\Auth\RegisterService;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
+    private $service;
 
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(RegisterService $service)
     {
-        $this->middleware('guest');
+        //$this->middleware('guest');
+        $this->service = $service;
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * Регистрация пользователя
+     * @param RegisterRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    protected function validator(array $data)
+    public function register(RegisterRequest $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        $this->service->register($request);
+
+        return redirect()->route('login')
+            ->with('success', 'Проверьте свою электронную почту и нажмите на ссылку для подтверждения.');
     }
 
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
+     * Подтверждение регистрации пользователя по токену
+     * @param $token
+     * @return \Illuminate\Http\RedirectResponse
      */
-    protected function create(array $data)
+    public function verify($token)
     {
+        if (!$user = User::where('remember_token', $token)->first()) {
+            return redirect()->route('login')
+                ->with('error', 'К сожалению, ваша ссылка не может быть идентифицирована.');
+        }
 
-        //add random avatar  
-        $input = ["rabbit.png", "bear.png", "cat.png"];
-        $rand_key =rand(0, 2);
-        $data['avatar'] = '/public/avatars/'.$input[$rand_key];
+        try {
+            $this->service->verify($user->id);
 
-
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),            
-            'avatar' => $data['avatar'],
-        ]);
+            return redirect()->route('login')->with('success', 'Ваш адрес электронной почты подтвержден. Теперь вы можете войти.');
+        } catch (\DomainException $e) {
+            return redirect()->route('login')->with('error', $e->getMessage());
+        }
     }
 }

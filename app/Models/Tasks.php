@@ -2,21 +2,55 @@
 
 namespace App\Models;
 
+use App\Http\Requests\TasksRequest;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
+/**
+ * @property int $id
+ * @property string $client
+ * @property string $name
+ * @property string $lawyer
+ * @property \DateTime $date
+ * @property string $status
+ * @property double $duration
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $clientid
+ * @property string $hrftodcm
+ * @property string $tag
+ * @property int $soispolintel
+ * @property int $postanovshik
+ * @property string $description
+ * @property \DateTime $donetime
+ * @property string $type
+ * @property boolean $new
+ * @property int $deal_id
+ */
 class Tasks extends Model
 {
+    const STATUS_WAITING = 'ожидает';
+    const STATUS_OVERDUE = 'просрочена';
+    const STATUS_IN_WORK = 'в работе';
+    const STATUS_COMPLETE = 'выполнена';
+
+    const STATE_NEW = 1;
+    const STATE_OLD = 0;
+
     use HasFactory;
 
-    protected $fillable = ['*'];
+    //protected $fillable = ['*'];
+    protected $guarded = [];
 
     protected function date(): Attribute
-      {$weekMap = [1 => 'Понедельник', 2 => 'Вторник', 3 => 'Среда', 4 => 'Четерг', 5 => 'Пятница', 6 => 'Суббота', 7 => 'Воскресенье'];
-            return Attribute::make(
-                get: fn ($value) => [
+    {
+        $weekMap = [1 => 'Понедельник', 2 => 'Вторник', 3 => 'Среда', 4 => 'Четерг', 5 => 'Пятница', 6 => 'Суббота', 7 => 'Воскресенье'];
+
+        return Attribute::make(
+            get: fn ($value) => [
                 'value' => Carbon::parse($value)->format('Y-m-d H:i'),
                 'day' => $weekMap[Carbon::parse($value)->dayOfWeekIso],
                 'month' => Carbon::parse($value)->format('j'),
@@ -24,7 +58,55 @@ class Tasks extends Model
                 'currentTime' => Carbon::parse($value)->format('H:i'),
                 'currentDay' => Carbon::parse($value)->format('j'),
                 'currentHour' => Carbon::parse($value)->format('H'),
-              ],
-            );
-      }
+            ],
+        );
+    }
+
+    /**
+     * @param TasksRequest $request
+     * @return Tasks
+     */
+    public static function new(TasksRequest $request): self
+    {
+        $task = new self();
+        $task->fill($request->except(['nameoftask', 'clientidinput', 'deals', '_token']));
+        $task->name = $request->nameoftask;
+        $task->clientid = $request->clientidinput;
+        $task->deal_id = ($request->deals !== null) ? $request->deals : null;
+        $task->new = static::STATE_NEW;
+        $task->postanovshik = Auth::user()->id;
+        $task->status = static::STATUS_WAITING;
+
+        return $task;
+    }
+
+    /**
+     * @param TasksRequest $request
+     * @return void
+     */
+    public function edit(TasksRequest $request): void
+    {
+        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', '_token']));
+        $this->name = $request->nameoftask;
+        $this->clientid = $request->clientidinput;
+        $this->deal_id = ($request->deals !== null) ? $request->deals : null;
+    }
+
+    /**
+     * Inversion relation Deal
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function deal()
+    {
+        return $this->belongsTo(Deal::class, 'deal_id', 'id');
+    }
+
+    /**
+     * Inversion relation Client
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function clientsModel()
+    {
+        return $this->belongsTo(ClientsModel::class, 'clientid', 'id');
+    }
 }

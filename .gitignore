@@ -14,10 +14,13 @@ auth.json
 npm-debug.log
 yarn-error.log
 /dump.sql
+/new-dump.sql
+/new-dump2.sql
 /.idea
 /.vscode
 /bootstrap/ssr
 /vendor
+/backup
 .env.production
 /.fleet
 
