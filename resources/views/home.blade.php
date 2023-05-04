@@ -66,6 +66,11 @@
         </div>
     </div>
     <div class = "row">
+
+        <div class = "row mt-2 h-25" >
+            <iframe src="https://datalens.yandex/gwhlvrc5b8es6"></iframe>
+        </div>
+
         <div class = "row mt-2">
             <div class = "col-4">
                 <div class = "card border-light">
