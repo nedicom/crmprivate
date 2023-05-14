@@ -126,6 +126,8 @@ class TasksController extends Controller
         $task->save();
         // Events
         if ($task->status === $task::STATUS_COMPLETE) {
+            $task -> donetime = Carbon::now();
+            $task->save();
             TaskCompleted::dispatch($task);
         }
 

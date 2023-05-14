@@ -84,6 +84,7 @@ class TaskAjaxController extends Controller{
         $id = $request->get('id');
         $task = Tasks::find($id);
         $task -> status = 'выполнена';
+        $task -> donetime = Carbon::now();
         $task -> new = 0;
         $task -> save();
         $checkedvipolnena = $request->get('checkedvipolnena');
