@@ -74,7 +74,8 @@ Route::middleware(['verified'])->group(function () {
 
     Route::controller(TasksController::class)->group(function () {
         Route::get('/tasks', 'index')->name('tasks');
-        Route::post('/tasks/add', 'create')->name('addtask');
+        Route::post('/tasks/add', 'store')->name('addtask');
+        Route::post('/tasks/add-by-lead', 'storeByLead')->name('add.task.lead');
         Route::post('/tasks/add/tag', 'tag')->name('tag');
         Route::get('/tasks/{id}', 'showTaskById')->name('showTaskById');
         Route::post('/tasks/{id}/edit', 'editTaskById')->name('editTaskById');

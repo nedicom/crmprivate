@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string $type
  * @property boolean $new
  * @property int $deal_id
+ * @property int $lead_id
  */
 class Tasks extends Model
 {
@@ -63,6 +64,7 @@ class Tasks extends Model
     }
 
     /**
+     * Создание задачи для Клиента
      * @param TasksRequest $request
      * @return Tasks
      */
@@ -73,6 +75,24 @@ class Tasks extends Model
         $task->name = $request->nameoftask;
         $task->clientid = $request->clientidinput;
         $task->deal_id = ($request->deals !== null) ? $request->deals : null;
+        $task->new = static::STATE_NEW;
+        $task->postanovshik = Auth::user()->id;
+        $task->status = static::STATUS_WAITING;
+
+        return $task;
+    }
+
+    /**
+     * Создание задачи для Лида
+     * @param TasksRequest $request
+     * @return Tasks
+     */
+    public static function newFromLead(TasksRequest $request): self
+    {
+        $task = new self();
+        $task->fill($request->except(['nameoftask', 'lead_id',  '_token']));
+        $task->name = $request->nameoftask;
+        $task->lead_id = $request->lead_id;
         $task->new = static::STATE_NEW;
         $task->postanovshik = Auth::user()->id;
         $task->status = static::STATUS_WAITING;

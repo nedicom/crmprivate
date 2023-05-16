@@ -1,21 +1,11 @@
 @extends('layouts.app')
 
-@section('title')
-  Клиент
-@endsection
+@section('title') Клиент @endsection
 
 @section('head')
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/resources/datetimepicker/jquery.datetimepicker.css">
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('input#date').datetimepicker({
-                lang: 'ru',
-                step: 5,
-            });
-        });
-    </script>
 @endsection
 
 @section('footerscript')
@@ -30,9 +20,9 @@
 
 @section('main')
     <h2 class="px-3">Клиент</h2>
-    <div class= 'col-md-6 col-xxl-3 my-3'>
-        <div class= 'card border-light'>
-            <div class= 'd-inline-flex justify-content-end px-2'>
+    <div class='col-md-6 col-xxl-3 my-3'>
+        <div class='card border-light'>
+            <div class='d-inline-flex justify-content-end px-2'>
                 @if ($data->status == 1) <i class="bi bi-circle-fill" style = "color: #0acf97;"></i> @else <i class="bi bi-circle-fill text-secondary"></i> @endif
             </div>
             <div class="text-center">
@@ -54,8 +44,8 @@
                         </a>
                     </div>
                     <div class="col-4 mb-3">
-                        <a class="btn btn-light w-100 nameToForm" href="#"
-                            dataclient="{{$data->name}}" datavalueid="{{$data->id}}" data-bs-toggle="modal" data-bs-target="#taskModal">
+                        <a class="btn btn-light w-100 nameToForm" href="#" data-bs-toggle="modal" data-bs-target="#taskModal"
+                            data-client="{{$data->name}}" data-value-id="{{$data->id}}" data-user-id="{{ Auth::id() }}" data-type="{{ \App\Models\Enums\Tasks\Type::Task->value }}">
                             <i class="bi-clipboard-plus"></i>
                         </a>
                     </div>
@@ -68,8 +58,9 @@
             </div>
         </div>
     </div>
-    <div class= 'col-md-9 col-xxl-9 my-3'>
-        <div class= 'card border-light'>
+
+    <div class='col-md-9 col-xxl-9 my-3'>
+        <div class='card border-light'>
             <div class="text-center">
                 <h6 class="mb-2 px-3 text-muted">Задачи не закрепленные к делам<span>({{ $data->tasksFunc->count() }})</span></h6>
                 <hr class="bg-dark-lighten my-3">
@@ -124,6 +115,7 @@
             </div>
         </div>
     </div>
+
     <!-- Модальные окна -->
     @include('inc/modal/addtask')
     @include('inc/modal/add-deal')

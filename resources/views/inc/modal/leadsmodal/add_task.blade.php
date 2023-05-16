@@ -6,7 +6,7 @@
             </div>
             <div class ="modal-body d-flex justify-content-center">
                 <div class ="col-10">
-                    <form action="{{route('addtask')}}" autocomplete="off" method="post">
+                    <form action="{{route('add.task.lead')}}" autocomplete="off" method="post">
                         @csrf
                         <div class="form-group mb-3 hideme">
                             <label for="nameoftask">Укажите название задачи <span class="text-danger">*</span></label>
@@ -36,12 +36,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6 form-group mb-3">
-                                <label for="client">Клиент<span class="text-danger">*</span></label>
-                                <input type="text" name="client" id="client" class="form-control" required>
-                                <div id="clientList"></div>
-                            </div>
-                            <div class="col-3 form-group mb-3 hideme">
+                            <div class="col-6 form-group mb-3 hideme">
                                 <label for="tag">Сделайте отметку</label>
                                 <select class="form-select" name="tag" id="tag">
                                     <option value="неважно">неважно</option>
@@ -50,7 +45,7 @@
                                     <option value="приоритет">приоритет</option>
                                 </select>
                             </div>
-                            <div class="col-3 form-group mb-3 hideme">
+                            <div class="col-6 form-group mb-3 hideme">
                                 <label for="status">Cтатус</label>
                                 <select class="form-select" name="status" id="status">
                                     <option value="в работе">в работе</option>
@@ -88,10 +83,8 @@
                                 </select>
                             </div>
                         </div>
-                        <!-- Список дел -->
-                        <div class="list-deals-block"></div>
 
-                        <input type="hidden" name="clientidinput" id="clientidinput" class="form-control">
+                        <input type="hidden" name="lead_id" id="lead_id">
                         <button type="submit" id='submit' class="btn btn-primary">Сохранить</button>
                     </form>
                 </div>

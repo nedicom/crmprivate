@@ -15,7 +15,7 @@
     <td>консультация</td>
     <td>{{$el->action}}</td>
     <td>
-        @foreach($datalawyers as $ellawyer)
+        @foreach ($datalawyers as $ellawyer)
             @if ($ellawyer->id == $el->responsible)
                 <img src="{{$ellawyer->avatar}}" style="width: 40px;  height:40px" class="rounded-circle"
                     data-toggle="tooltip" title="{{$ellawyer->name}}">
@@ -23,17 +23,28 @@
         @endforeach
     </td>
     <td>
-        @foreach($datalawyers as $ellawyer)
+        @foreach ($datalawyers as $ellawyer)
             @if ($ellawyer->id == $el->lawyer)
-            <img src="{{$ellawyer->avatar}}" style="width: 40px;  height:40px" class="rounded-circle"
-            data-toggle="tooltip" title="{{$ellawyer->name}}">
+                <img src="{{$ellawyer->avatar}}" style="width: 40px;  height:40px" class="rounded-circle"
+                    data-toggle="tooltip" title="{{$ellawyer->name}}">
             @endif
         @endforeach
     </td>
     <td>{{$el->source}}</td>
     <td>
-        <a class="btn btn-light w-100" href="{{ route ('showLeadById', $el->id) }}">
+        <a class="btn w-100 nameToForm lead" href="#" data-bs-toggle="modal" data-bs-target="#taskModal"
+           data-lead-id="{{ $el->id }}" data-user-id="{{ Auth::id() }}" data-type="{{ \App\Models\Enums\Tasks\Type::Task->value }}">
+            <i class="bi-clipboard-plus"></i>
+        </a>
+    </td>
+    <td>
+        <a class="btn btn-light w-100" href="{{ route ('showLeadById', $el->id) }}" style="position: relative">
             <i class="bi-three-dots"></i>
+            @if ($countTasks = $el->tasks()->where('status', '!=', \App\Models\Tasks::STATUS_COMPLETE)->count() > 0)
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{$countTasks}}
+                </span>
+            @endif
         </a>
     </td>
 </tr>

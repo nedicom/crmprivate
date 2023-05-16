@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::table('tasks', function (Blueprint $table) {
             $table->text('description')->nullable()->change();
             $table->string('hrftodcm', 1000)->nullable()->change();
+            $table->unsignedBigInteger('clientid')->nullable()->default(null)->comment('ID клиента')->change();
+            $table->string('client', 255)->nullable()->comment('Имя клиента')->change();
             $table->unsignedBigInteger('lead_id')->nullable();
 
             $table->foreign('lead_id')->references('id')->on('leads')->cascadeOnDelete();
@@ -34,6 +36,8 @@ return new class extends Migration
 
             $table->string('description', 2000)->change();
             $table->string('hrftodcm', 1000)->change();
+            $table->integer('clientid')->change();
+            $table->string('client')->change();
             $table->dropColumn('lead_id');
         });
     }

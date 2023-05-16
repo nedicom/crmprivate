@@ -70,9 +70,19 @@ class TasksController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Throwable
      */
-    public function create(TasksRequest $request)
+    public function store(TasksRequest $request)
     {
         $task = Tasks::new($request);
+        $task->saveOrFail();
+        // Events
+        TaskCreated::dispatch($task);
+
+        return redirect()->back()->with('success', 'Все в порядке, задача добавлена.');
+    }
+
+    public function storeByLead(TasksRequest $request)
+    {
+        $task = Tasks::newFromLead($request);
         $task->saveOrFail();
         // Events
         TaskCreated::dispatch($task);

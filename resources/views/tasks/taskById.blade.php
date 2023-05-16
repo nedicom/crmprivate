@@ -14,7 +14,10 @@
 
 @section('leftmenuone')
     <li class="nav-item text-center p-3">
-        <a class="text-white text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#edittaskModal">Изменить задачу</a>
+        <a class="text-white text-decoration-none nameToForm edit @if ($data->clientsModel) clientTask @endif" href="#" @if ($data->clientsModel) data-client="{{ $data->clientsModel->name }}" data-value-id="{{ $data->clientsModel->id }}" @endif
+        data-task-id="{{ $data->id }}" data-bs-toggle="modal" data-bs-target="#edittaskModal" data-type="{{ \App\Models\Enums\Tasks\Type::Task->value }}">
+            Изменить задачу
+        </a>
     </li>
 @endsection
 
@@ -50,12 +53,14 @@
                             </a>
                         </div>
                     @endif
-                    <div class="col-2 mb-3">
-                        <a class="btn btn-light w-100 nameToForm" href="#" data-client="{{ $data->clientsModel->name }}" data-value-id="{{ $data->clientsModel->id }}" data-task-id="{{ $data->id }}"
-                            data-bs-toggle="modal" data-bs-target="#edittaskModal">
-                            <i class="bi-three-dots"></i>
-                        </a>
-                    </div>
+                    @if ($data->clientsModel)
+                        <div class="col-2 mb-3">
+                            <a class="btn btn-light w-100 nameToForm edit @if ($data->clientsModel) clientTask @endif" href="#" data-client="{{ $data->clientsModel->name }}" data-value-id="{{ $data->clientsModel->id }}" data-task-id="{{ $data->id }}"
+                                data-bs-toggle="modal" data-bs-target="#edittaskModal" data-type="{{ \App\Models\Enums\Tasks\Type::Task->value }}">
+                                <i class="bi-three-dots"></i>
+                            </a>
+                        </div>
+                    @endif
                     <div class="col-2 mb-3">
                         <a class="btn btn-light w-100" href="{{ route ('TaskDelete', $data->id) }}">
                             <i class="bi-trash"></i>

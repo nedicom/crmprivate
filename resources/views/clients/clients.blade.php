@@ -1,17 +1,9 @@
 @extends('layouts.app')
 
 @section('head')
-  <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css" href="/resources/datetimepicker/jquery.datetimepicker.css">
-  <script type="text/javascript">
-      $(document).ready(function(){
-          $('input#date').datetimepicker({
-              lang: 'ru',
-              step: 5,
-          });
-      });
-  </script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/resources/datetimepicker/jquery.datetimepicker.css">
 @endsection
 
 @section('footerscript')
@@ -45,7 +37,8 @@
                               </a>
                           </div>
                           <div class="px-1 col-3">
-                              <a class="btn btn-light w-100 nameToForm" href="#" data-client="{{$client->name}}" data-value-id="{{$client->id}}" data-bs-toggle="modal" data-bs-target="#taskModal" title="Добавить задачу">
+                              <a class="btn btn-light w-100 nameToForm clientTask" href="#" data-bs-toggle="modal" data-bs-target="#taskModal" title="Добавить задачу"
+                                 data-client="{{$client->name}}" data-value-id="{{$client->id}}" data-user-id="{{ Auth::id() }}" data-type="{{ \App\Models\Enums\Tasks\Type::Task->value }}">
                                   <i class="bi-clipboard-plus"></i>
                               </a>
                           </div>
@@ -136,46 +129,6 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
           return new bootstrap.Tooltip(tooltipTriggerEl)
         })
-    </script>
-
-    <script>
-      function myTask(clicked_id) {
-        var type = clicked_id;
-        document.getElementById("taskname").innerHTML = type;
-        document.getElementById("nameoftask").value = type;
-        document.getElementById("duration").value = 1;
-        var collection = document.getElementsByClassName("hideme")
-          for (let i = 0; i < collection.length; i++) {
-            collection[i].style.display = "none";
-          }
-        document.getElementById("type").value = type;
-        document.getElementById("lawyer").value = {{ Auth::user()->id}};
-        document.getElementById("soispolintel").value = {{ Auth::user()->id}};
-        var now = new Date();
-        now.setHours(23);
-        now.setMinutes(00);
-        document.getElementById("date").value = now.toISOString().slice(0,16);
-      }
-    </script>
-
-    <script>
-      function Task(clicked_id) {
-        var type = clicked_id;
-        document.getElementById("taskname").innerHTML = type;
-        document.getElementById("nameoftask").value = '';
-        document.getElementById("duration").value = 1;
-        var collection = document.getElementsByClassName("hideme")
-          for (let i = 0; i < collection.length; i++) {
-            collection[i].style.display = "block";
-          }
-        document.getElementById("type").value = type;
-        document.getElementById("lawyer").value = {{ Auth::user()->id}};
-        document.getElementById("soispolintel").value = {{ Auth::user()->id}};
-        var now = new Date();
-        now.setHours(23);
-        now.setMinutes(00);
-        document.getElementById("date").value = now.toISOString().slice(0,16);
-      }
     </script>
 
     <script>

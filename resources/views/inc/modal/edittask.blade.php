@@ -1,44 +1,8 @@
-<script>
-$(document).ready(function(){
-    $('#client').keyup(function() {
-        var query = $(this).val();
-        var quantity = $(this).val().length;
-
-        if(quantity > 2)
-        {
-            var _token = $('input[name="_token"]').val();
-            $.ajax({
-                url:"{{ route('getclient') }}",
-                method:"POST",
-                data:{query:query, _token:_token},
-                success:function(data){
-                    $('#clientList').fadeIn();
-                    $('#clientList').html(data);
-                }
-            });
-        }
-    });
-    $(document).on('click', '.clientAJAX', function() {
-        $('#clientidinput').val($(this).val());
-        $('#client').val($(this).text());
-        $('#clientList').fadeOut();
-    });
-});
-
-// Datepicker
-$(document).ready(function() {
-    $('input#date').datetimepicker({
-        lang: 'ru',
-        step: 5,
-    });
-});
-</script>
-
 <div class="modal fade" id="edittaskModal">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
             <div class ="modal-header">
-                <h2>Изменить задачу</h2>
+                <h2>Изменить <span id="taskname">задачу</span></h2>
             </div>
             <div class ="modal-body d-flex justify-content-center">
                 <div class ="col-10">
@@ -128,7 +92,7 @@ $(document).ready(function() {
                         <!-- Список дел -->
                         <div class="list-deals-block"></div>
 
-                        <input type="hidden" name="clientidinput" id="clientidinput" class="form-control">
+                        <input type="hidden" name="clientidinput" id="clientidinput" class="form-control" @if ($data->clientsModel) value="{{ $data->clientsModel->id }}" @endif>
                         <button type="submit" id='submit' class="btn btn-primary">обновить</button>
                     </form>
                 </div>

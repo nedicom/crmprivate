@@ -38,7 +38,7 @@
   <div class="modal fade" id="meetingModal">
     <div class="modal-dialog">
       <div class="modal-content">
-          
+
       <div class ="modal-header">
             <h2>Добавить встречу</h2>
           </div>
