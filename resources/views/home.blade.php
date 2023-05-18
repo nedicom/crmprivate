@@ -66,10 +66,11 @@
         </div>
     </div>
     <div class = "row">
-
-        <div class = "row mt-2 h-25" >
-            <iframe src="https://datalens.yandex/gwhlvrc5b8es6"></iframe>
-        </div>
+        @if (!config('app.debug'))
+            <div class = "row mt-2 h-25" >
+                <iframe src="https://datalens.yandex/gwhlvrc5b8es6"></iframe>
+            </div>
+        @endif
 
         <div class = "row mt-2">
             <div class = "col-4">
