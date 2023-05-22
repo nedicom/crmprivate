@@ -67,7 +67,7 @@
     </div>
     <div class = "row">
         @if (!config('app.debug'))
-            <div class = "row mt-2 h-25" >
+            <div class = "row mt-2 h-50" >
                 <iframe src="https://datalens.yandex/gwhlvrc5b8es6"></iframe>
             </div>
         @endif
