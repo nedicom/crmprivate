@@ -45,8 +45,8 @@
           </select>
         </div>
         <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="status" id="status" value="1" @if (($data -> status) == 1) checked @else @endif>
-          <label class="form-check-label" for="flexSwitchCheckDefault">В работе</label>
+          <input class="form-check-input" type="checkbox" name="status" id="status" value="1" @if (($data -> status) == 1) checked @endif>
+          <label class="form-check-label" for="status">В работе</label>
         </div>
         <button type="submit" class="btn btn-primary">Обновить</button>
       </form>

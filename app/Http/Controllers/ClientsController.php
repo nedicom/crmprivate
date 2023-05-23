@@ -78,7 +78,8 @@ class ClientsController extends Controller
     public function update(int $id, ClientsRequest $request)
     {
         $client = ClientsModel::find($id);
-        $client->edit($request);
+        $client->edit($request);        
+        if(!$request->status){$client->status = null;};
         $client->save();
 
         return redirect()->route('showClientById', $id)->with('success', 'Все в порядке, клиент обновлен');
