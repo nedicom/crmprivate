@@ -225,7 +225,7 @@
                           <td>{{$number}}</td>
                           <td>{{$el -> created_at->format('j / m')}}</td>
                           <td class = "text-truncate" data-bs-toggle="tooltip" data-bs-title="{{$el -> client}}">
-                          {{$el -> client}}
+                            <a href = "clients/{{$el -> clientid}}" target="_blank">{{$el -> client}} </a>
                           </td>
                           <td class = "text-truncate" data-bs-toggle="tooltip" data-bs-title="{{$el -> serviceFunc -> name}}">
                            {{$el -> serviceFunc -> name}}

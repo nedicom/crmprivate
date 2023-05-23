@@ -26,7 +26,7 @@
                                 <span>Продолжительность<span class="text-danger">*</span>
                                 <div class="input-group form-group mb-3">
                                     <label class="input-group-text" for="duration"><i class="bi bi-stopwatch"></i></label>
-                                    <input type="number" name="duration" min="0.5" max="25" step="0.5" id="duration" class="form-control" required />
+                                    <input type = "number" name="duration" value="1" min="0.25" max="25" step="0.25" id="duration" class="form-control">
                                     <span class="input-group-text">час</span>
                                 </div>
                             </div>

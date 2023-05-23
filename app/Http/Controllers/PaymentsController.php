@@ -186,11 +186,10 @@ class PaymentsController extends Controller{
           }
 
           $payment -> calculation = $req -> input('calculation');
-          $payment -> client = $req -> input('client');
+          $payment -> client = $req -> client;         
           $payment -> nameOfAttractioner = $req -> input('nameOfAttractioner');
           $payment -> nameOfSeller = $req -> input('nameOfSeller');
-          $payment -> directionDevelopment = $req -> input('directionDevelopment');
-          if($req -> input('clientidinput')){$payment -> clientid = $req -> input('clientidinput');};
+          $payment -> directionDevelopment = $req -> input('directionDevelopment');          
           
           $payment -> firmearning = ($summ - $payment -> SallerSalary - $payment -> AttaractionerSalary
           - $payment -> DeveloperSalary - $payment -> modifyAttraction - $payment -> modifySeller);

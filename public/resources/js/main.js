@@ -82,10 +82,14 @@ $(document).ready(function() {
     });
 
     // Datetimepicker
-    $('input#date').datetimepicker({
-        lang: 'ru',
-        step: 5,
-    });
+    if (typeof $('input#date').datetimepicker !== "undefined") { //check if function exist to avoid err
+        $('input#date').datetimepicker({
+            lang: 'ru',
+            step: 15, //more useful for lawyers
+            minTime:'8:00',
+            maxTime:'22:00'
+        });
+    }
 
     // Подгрузка списка клиентов при клике на поле "Клиент" у формы Задач
     $('#client').keyup(function() {

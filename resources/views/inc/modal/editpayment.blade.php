@@ -1,35 +1,4 @@
-<script>
-  $(document).ready(function(){
-
-   $('#client').keyup(function(){
-          var query = $(this).val();
-          var quantity = $(this).val().length;
-          if(quantity > 2)
-          {
-           var _token = $('input[name="_token"]').val();
-           $.ajax({
-            url:"{{ route('getclient') }}",
-            method:"POST",
-            data:{query:query, _token:_token},
-            success:function(data){
-             $('#clientList').fadeIn();
-                      $('#clientList').html(data);
-            }
-           });
-          }
-      });
-
-      $(document).on('click', '#clientAJAX', function(){
-          $('#clientidinput').val($(this).val());
-          $('#client').val($(this).attr( "name" ));
-          $('#clientList').fadeOut();
-      });
-
-  });
-
-  </script>
-
-  <div class="modal fade" id="editpaymentModal">
+<div class="modal fade" id="editpaymentModal">
   <div class="modal-dialog">
     <div class="modal-content">
         <div class ="modal-header">
@@ -37,7 +6,7 @@
         </div>
 
         <div class ="modal-body">
-      <form action="{{route('PaymentUpdateSubmit', $data -> id)}}" method="post" autocomplete="off">
+        <form action="{{route('PaymentUpdateSubmit', $data -> id)}}" method="post" autocomplete="off">
         @csrf
         
 
@@ -78,11 +47,10 @@
 
 
         <div class="form-group mb-3">
-          <label for="client">Укажите клиента</label>
-          <input type = "text" name="client" placeholder="" id="client" value='{{$data->client}}' class="form-control">
-          <div id="clientList">
-            </div>
+          <label for="client">Клиент не редактируется</label>
+          <input type = "text" name="client" value='{{$data->client}}' readonly class="form-control-plaintext">          
         </div>
+        <input type = "text" name="clienthidden" value='{{$data->clientid}}' class="invisible">
 
         <div class="form-group mb-3">
           <label for="service">Укажите услугу</label>
@@ -129,8 +97,6 @@
             <option value="НАЛИЧНЫЕ" @if ($data->calculation == "НАЛИЧНЫЕ") selected @endif>НАЛИЧНЫЕ</option>
           </select>
         </div>
-
-        <input type="hidden" name="clientidinput" id="clientidinput" class="form-control">
 
         <button type="submit" id='submit' class="btn btn-primary">Обновить</button>
       </form>

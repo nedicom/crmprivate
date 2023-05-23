@@ -81,13 +81,14 @@
           </div>
           <div class="text-center">
             <div class="mt-3 row d-flex justify-content-center">
-                <div class="mt-3 row d-flex justify-content-center">
+            <p>* Редактировать и удалять платежи может только админ</p>
+                <div class="mt-3 row d-flex justify-content-center">                  
                     <div class="col-2 mb-3">
-                      <a class="btn btn-light w-100" href="#" data-bs-toggle="modal" data-bs-target="#editpaymentModal">
+                      <a class="btn btn-light w-100 @if((Auth::user()->role) !== ('admin')) disabled @endif" ref="#" data-bs-toggle="modal" data-bs-target="#editpaymentModal">
                       <i class="bi-pen"></i></a>
                     </div>
                     <div class="col-2 mb-3">
-                      <a class="btn btn-light w-100" href="{{ route ('PaymentDelete', $data->id) }}">
+                      <a class="btn btn-light w-100" @if((Auth::user()->role) !== ('admin')) disabled @endif" href="{{ route ('PaymentDelete', $data->id) }}">
                       <i class="bi-trash"></i></a>
                     </div>
                   </div>
