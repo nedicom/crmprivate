@@ -45,7 +45,7 @@ class TasksController extends Controller
                 'datalawyers' =>  User::all()
             ]);
         } elseif ($calendar == 'month') {
-              if ($month = $request->input('months')) {
+              if ($request->input('months')) { // check number of monts
                   $month = ($request->input('months'));
               } else {
                   $month = ((Carbon::now()->month) - 1);

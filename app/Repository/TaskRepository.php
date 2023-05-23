@@ -28,7 +28,7 @@ class TaskRepository
     public function getByBetweenDate(\Carbon\Carbon $startDate, \Carbon\Carbon $endDate, array $fields)
     {
         $query = Tasks::select("*")
-            ->whereBetween('date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+            ->whereBetween('date', [$startDate, $endDate]) // variable were using
             ->where($fields['lawyerfilter'], '=', $fields['checkedlawyer'])
             ->where($fields['typefilter'], '=', $fields['type'])
             ->orderBy('date', 'asc')

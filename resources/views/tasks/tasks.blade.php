@@ -93,18 +93,19 @@
                 @if (app('request')->input('calendar') == 'month')
                     <div class="">
                         <select class="form-select" name="months" id="months">
+                            <option value="">не выбрано</option>
                             <option value="0" @if (app('request')->input('months') == "0") selected @endif >январь</option>
                             <option value="1" @if (app('request')->input('months') == "1") selected @endif >февраль</option>
                             <option value="2" @if (app('request')->input('months') == "2") selected @endif >март</option>
                             <option value="3" @if (app('request')->input('months') == "3") selected @endif >апрель</option>
                             <option value="4" @if (app('request')->input('months') == "4") selected @endif >май</option>
                             <option value="5" @if (app('request')->input('months') == "5") selected @endif >июнь</option>
-                            <option value="5" @if (app('request')->input('months') == "6") selected @endif >июль</option>
-                            <option value="5" @if (app('request')->input('months') == "7") selected @endif >август</option>
-                            <option value="5" @if (app('request')->input('months') == "8") selected @endif >сентябрь</option>
-                            <option value="5" @if (app('request')->input('months') == "9") selected @endif >октябрь</option>
-                            <option value="5" @if (app('request')->input('months') == "10") selected @endif >ноябрь</option>
-                            <option value="5" @if (app('request')->input('months') == "11") selected @endif >декабрь</option>
+                            <option value="6" @if (app('request')->input('months') == "6") selected @endif >июль</option>
+                            <option value="7" @if (app('request')->input('months') == "7") selected @endif >август</option>
+                            <option value="8" @if (app('request')->input('months') == "8") selected @endif >сентябрь</option>
+                            <option value="9" @if (app('request')->input('months') == "9") selected @endif >октябрь</option>
+                            <option value="10" @if (app('request')->input('months') == "10") selected @endif >ноябрь</option>
+                            <option value="11" @if (app('request')->input('months') == "11") selected @endif >декабрь</option>
                         </select>
                     </div>
                 @endif
@@ -248,7 +249,7 @@
             <script>
                 function mouseDown(clicked_id) {
                     document.getElementById(clicked_id).style.border = "solid 1px #FF1493";
-                    document.getElementById('status'+clicked_id).innerHTML = "изменен";
+                    // document.getElementById('status'+clicked_id).innerHTML = "изменен"; // solwing problem with month
                 }
 
                 function mouseUp(clicked_id) {
