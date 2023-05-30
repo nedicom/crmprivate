@@ -14,13 +14,13 @@
 
 <h2 class="px-3">Платеж</h2>
 
-  <div class="col-md-6 my-3 mx-3">
+  <div class="row my-3 mx-3">
         <div class="card border-light">
             <table class="table table-hover align-middle">
               <thead>
-                <tr>111
+                <tr>
                     <th scope="col">{{$data -> created_at}} 222</th>
-                    <th scope="col"><h5 class="mb-2 text-muted text-truncate">{{$data -> client}}</h5></th>
+                    <th scope="col text-truncate">{{$data -> client}}</th>
                     <th scope="col">{{ $creator }}</th>
                 </tr>
               </thead>
