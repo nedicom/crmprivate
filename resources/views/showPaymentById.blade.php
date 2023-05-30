@@ -19,7 +19,7 @@
             <table class="table table-hover align-middle">
               <thead>
                 <tr>
-                    <th scope="col">{{$data -> created_at}} 222</th>
+                    <th scope="col">{{$data -> created_at}}</th>
                     <th scope="col text-truncate">{{$data -> client}}</th>
                     <th scope="col">{{ $creator }}</th>
                 </tr>
