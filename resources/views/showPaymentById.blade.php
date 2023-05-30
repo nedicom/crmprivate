@@ -19,9 +19,9 @@
             <table class="table table-hover align-middle">
               <thead>
                 <tr>
-                    <th scope="col">{{$data -> created_at}}</th>
+                    <th scope="col">{{$data -> created_at}} 222</th>
                     <th scope="col"><h5 class="mb-2 text-muted text-truncate">{{$data -> client}}</h5></th>
-                    <th scope="col"></th>
+                    <th scope="col"> 222</th>
                 </tr>
               </thead>
 

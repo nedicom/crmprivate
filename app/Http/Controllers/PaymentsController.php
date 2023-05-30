@@ -131,9 +131,20 @@ class PaymentsController extends Controller{
             }
     }
 
+    /**
+     * Summary of showPaymentById
+     * @param mixed $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showPaymentById($id){
+      if(Payments::find($id)->creator_id){
+        $creator = User::find(Payments::find($id)->creator_id)->name;
+      }
+      else{
+        $creator = "создатель платежа не указан";
+      }
           return view ('showPaymentById', ['data' => Payments::with('serviceFunc', 'AttractionerFunc', 'sellerFunc', 'developmentFunc')
-          ->find($id)], ['datalawyers' => User::findOrFail(Payments::findOrFail($id)->creator_id)->name, 'dataservices' =>  Services::all(), 'dataclients' =>  ClientsModel::all()]);
+          ->find($id)], ['creator' => $creator,'datalawyers' => User::all(), 'dataservices' =>  Services::all(), 'dataclients' =>  ClientsModel::all()]);
       }
 
       //обновление платежа
