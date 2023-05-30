@@ -19,7 +19,7 @@ class PaymentsController extends Controller{
         $summ = $req -> input('summ');
         
         $payment -> summ = $summ;
-
+        $payment -> creator_id = Auth::id();
 
         $serviceid = $req -> input('service');
         $payment -> service = $serviceid;
@@ -133,7 +133,7 @@ class PaymentsController extends Controller{
 
     public function showPaymentById($id){
           return view ('showPaymentById', ['data' => Payments::with('serviceFunc', 'AttractionerFunc', 'sellerFunc', 'developmentFunc')
-          ->find($id)], ['datalawyers' =>  User::all(), 'dataservices' =>  Services::all(), 'dataclients' =>  ClientsModel::all()]);
+          ->find($id)], ['datalawyers' => User::findOrFail(Payments::findOrFail($id)->creator_id)->name, 'dataservices' =>  Services::all(), 'dataclients' =>  ClientsModel::all()]);
       }
 
       //обновление платежа
