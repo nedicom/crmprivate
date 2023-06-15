@@ -12,14 +12,18 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Repository\TaskRepository;
+use App\Services\TaskService;
+use App\Models\TaskPaymentAssign;
 
 class TasksController extends Controller
 {
     private $repository;
+    private $service;
 
-    public function __construct(TaskRepository $repository)
+    public function __construct(TaskRepository $repository, TaskService $service)
     {
         $this->repository = $repository;
+        $this->service = $service;
     }
 
     public function index(Request $request)
@@ -74,6 +78,11 @@ class TasksController extends Controller
     {
         $task = Tasks::new($request);
         $task->saveOrFail();
+
+        if ($request->has('payID')) {
+            // Присваевываем добавленные платежи
+            $this->service->assignPayments($task, $request->input('payID'));
+        }
         // Events
         TaskCreated::dispatch($task);
 
@@ -134,6 +143,12 @@ class TasksController extends Controller
         $task = Tasks::find($id);
         $task->edit($request);
         $task->save();
+
+        // Привязываем платежи
+        $this->service->clearAssignPayments($task);
+        if ($request->has('payID')) {
+            $this->service->assignPayments($task, $request->input('payID'));
+        }
         // Events
         if ($task->status === $task::STATUS_COMPLETE) {
             $task->donetime = Carbon::now();
@@ -175,5 +190,27 @@ class TasksController extends Controller
         }
 
         return $html;
+    }
+
+    /**
+     * Подгрузка списка задач по Ajax запросу
+     */
+    public function getAjaxList(Request $request)
+    {
+        if ($request->has('query')) {
+            $query = $this->repository->getByClientQuery($request->input('query'));
+
+            $output = '<ul class="list-group">';
+            foreach ($query as $value) {
+                $output .= '<li class="list-group-item taskList taskIndex"
+                    data-task-id="'. $value->id .'"><a href="#" class="text-decoration-none"><span class="name-client">' .
+                    $value->client . '</span> - ' . $value->name . ' - ' . $value->created_at .'</a></li>';
+            }
+            $output .= '</ul>';
+
+            return $output;
+        }
+
+        return null;
     }
 }

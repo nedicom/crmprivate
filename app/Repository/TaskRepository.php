@@ -52,4 +52,19 @@ class TaskRepository
 
         return $query;
     }
+
+    /**
+     * Список задач по search запросу имени клиента
+     * @param string  $clientName Имя клиента
+     * @return mixed
+     */
+    public function getByClientQuery(string $clientName)
+    {
+        $query = DB::table('tasks')
+            ->select(['id', 'name', 'client', 'created_at'])
+            ->where('client', 'LIKE', '%' . $clientName . '%')
+            ->get();
+
+        return $query;
+    }
 }

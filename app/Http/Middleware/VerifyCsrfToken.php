@@ -11,5 +11,7 @@ class VerifyCsrfToken extends Middleware
         '/bots/*',
         '/getclient',
         '/tasks/get-deals',
+        '/payments/list/ajax',
+        '/tasks/list/ajax',
     ];
 }

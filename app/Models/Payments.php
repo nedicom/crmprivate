@@ -4,27 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Services;
-use App\Models\User;
-use App\Models\ClientsModel;
 
+/**
+ * @property int $id
+ */
 class Payments extends Model
-  {
-      use HasFactory;
+{
+    use HasFactory;
 
-        public function serviceFunc(){
+    public function serviceFunc()
+    {
         return $this->belongsTo(Services::class, 'service');
     }
 
-        public function AttractionerFunc(){
-        return $this->belongsTo(USER::class, 'nameOfAttractioner');
+    public function AttractionerFunc()
+    {
+        return $this->belongsTo(User::class, 'nameOfAttractioner');
     }
 
-        public function sellerFunc(){
-        return $this->belongsTo(USER::class, 'nameOfSeller');
+    public function sellerFunc()
+    {
+        return $this->belongsTo(User::class, 'nameOfSeller');
     }
 
-        public function developmentFunc(){
-        return $this->belongsTo(USER::class, 'directionDevelopment');
+    public function developmentFunc()
+    {
+        return $this->belongsTo(User::class, 'directionDevelopment');
     }
-  }
+
+    public function tasks()
+    {
+        return $this->belongsToMany(Tasks::class, 'task_payment_assigns', 'payment_id', 'task_id');
+    }
+}

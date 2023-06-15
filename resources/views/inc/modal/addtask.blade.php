@@ -90,6 +90,28 @@
                         </div>
                         <!-- Список дел -->
                         <div class="list-deals-block"></div>
+                        <!-- Платежи -->
+                        <div class="row">
+                            <div class="col-12 form-group paymentsIndex">
+                                <label>Платежи</label>
+                                <table class="table table-bordered" id="paymentsTable">
+                                    <tr>
+                                        <td width="300">
+                                            <div class="payment-input-block">
+                                                <input type="text" name="payClient[]" placeholder="Введите имя клиента" class="payment-input form-control" />
+                                                <input type="hidden" name="payID[]" class="payment-id" value="">
+                                                <!-- Список платежей -->
+                                                <div class="paymentsList" style="display:none"></div>
+                                            </div>
+                                        </td>
+                                        <td class="info-payment"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4">
+                                <button style="margin-bottom:15px;" type="button" name="add-payment" id="add-payment" class="btn btn-success">Добавить платеж</button>
+                            </div>
+                        </div>
 
                         <input type="hidden" name="clientidinput" id="clientidinput" class="form-control">
                         <button type="submit" id='submit' class="btn btn-primary">Сохранить</button>
@@ -99,3 +121,5 @@
         </div>
     </div>
 </div>
+
+

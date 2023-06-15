@@ -81,6 +81,7 @@ Route::middleware(['verified'])->group(function () {
         Route::post('/tasks/{id}/edit', 'editTaskById')->name('editTaskById');
         Route::get('/tasks/{id}/delete', 'delete')->name('TaskDelete');
         Route::post('/tasks/get-deals', 'getDealsByClient')->name('task.get.deals');
+        Route::post('/tasks/list/ajax', 'getAjaxList')->name('tasks.list.ajax');
     });
 
     Route::get('/deal/{id}', [DealController::class, 'show'])->name('deal.show');
@@ -97,6 +98,7 @@ Route::middleware(['verified'])->group(function () {
         Route::get('/payments/{id}', 'showPaymentById')->name('showPaymentById');
         Route::post('/payments/{id}/edit', 'PaymentUpdateSubmit')->name('PaymentUpdateSubmit');
         Route::get('/payments/{id}/delete', 'PaymentDelete')->name('PaymentDelete');
+        Route::post('/payments/list/ajax', 'getAjaxList')->name('payments.list.ajax');
     });
 
     Route::get('/lawyers', [LawyersController::class, 'Alllawyers'])->name('lawyers');
@@ -107,6 +109,6 @@ Route::middleware(['verified'])->group(function () {
     Route::put('/users/{user}/change-password', [\App\Http\Controllers\UsersController::class, 'changePassword'])->name('users.change-password');
 });
 
-Route::POST('/getclient', [GetclientAJAXController::class, 'getclient'])->name('getclient')->middleware('auth');
+Route::post('/getclient', [GetclientAJAXController::class, 'getclient'])->name('getclient')->middleware('auth');
 
 Route::post('/setstatus', [TaskAJAXController::class, 'setstatustask'])->name('setstatus');

@@ -96,8 +96,7 @@ $(document).ready(function() {
         var query = $(this).val();
         var quantity = $(this).val().length;
 
-        if(quantity > 2)
-        {
+        if(quantity > 2) {
             $.ajax({
                 url: "/getclient",
                 method: "POST",
@@ -116,4 +115,53 @@ $(document).ready(function() {
         $('#client').val($(this).text());
         $('#clientList').fadeOut();
     });
+
+    // Подгрузка списка платежей при клике на поле "Выбор платежа" у формы Задач
+    $(document).on('keyup', '.payment-input', function() {
+        var query = $(this).val();
+        var quantity = $(this).val().length;
+        var elem = $(this);
+
+        if(quantity > 2) {
+            $.ajax({
+                url: "/payments/list/ajax",
+                method: "POST",
+                data: {query: query},
+                success: function (data) {
+                    var list = elem.parents($('.paymentsIndex')).children('.paymentsList');
+                    list.fadeIn();
+                    list.html(data);
+                }
+            });
+        }
+    });
+
+    // Динамические поля платежей
+    $("#add-payment").on('click', function() {
+        $("#paymentsTable").append('<tr><td width="300">' +
+            '<div class="payment-input-block">' +
+            '<input type="text" name="payClient[]" placeholder="Введите имя клиента" class="payment-input form-control" />' +
+            '<input type="hidden" name="payID[]" class="payment-id" value="" />' +
+            '<div class="paymentsList" style="display:none"></div>' +
+            '</div></td>' +
+            '<td class="info-payment"></td>' +
+            '<td><button type="button" class="btn btn-danger remove-tr">Удалить</button>' +
+            '</td></tr>'
+        );
+    });
+    // Удаление в таблице строки платежа
+    $(document).on('click', '.remove-tr', function() {
+        $(this).parents('tr').remove();
+    });
+    // Выбор платежа из выпадающего списка в форме Задачи
+    $(document).on('click', '.paymentIndex', function() {
+        var parent = $(this).parents($('.payment-input-block'));
+        //alert($(this).attr('data-payment-id'));
+        parent.children('.payment-id').val($(this).attr('data-payment-id'));
+        parent.children('input.payment-input').val($(this).find($('.name-client')).text());
+        $(this).parents($('#paymentsTable')).children('tr:last').children('td.info-payment').text($(this).text());
+        $('.paymentsList').fadeOut();
+    });
 });
+
+

@@ -71,7 +71,7 @@ class Tasks extends Model
     public static function new(TasksRequest $request): self
     {
         $task = new self();
-        $task->fill($request->except(['nameoftask', 'clientidinput', 'deals', '_token']));
+        $task->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', '_token']));
         $task->name = $request->nameoftask;
         $task->clientid = $request->clientidinput;
         $task->deal_id = ($request->deals !== null) ? $request->deals : null;
@@ -106,7 +106,7 @@ class Tasks extends Model
      */
     public function edit(TasksRequest $request): void
     {
-        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', '_token']));
+        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', '_token']));
         $this->name = $request->nameoftask;
         $this->clientid = $request->clientidinput;
         $this->deal_id = ($request->deals !== null) ? $request->deals : null;
@@ -128,5 +128,10 @@ class Tasks extends Model
     public function clientsModel()
     {
         return $this->belongsTo(ClientsModel::class, 'clientid', 'id');
+    }
+
+    public function payments()
+    {
+        return $this->belongsToMany(Payments::class, 'task_payment_assigns', 'task_id', 'payment_id');
     }
 }

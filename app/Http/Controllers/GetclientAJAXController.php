@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class GetclientAJAXController extends Controller {
+class GetclientAJAXController extends Controller
+{
     /**
      * @param Request $request
      * @return string|null
