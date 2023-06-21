@@ -18,16 +18,15 @@
                 <label class="btn btn-light" for="month">Месяц</label>
             </div>
         </div>
-        @if (auth()->user()->isAdmin())
             <div class="px-3 m-1">
                 <select class="form-select form-select-sm input-home-filter" name="lawyer">
                     <option value="">юрист</option>
                     @foreach($data['datalawyers'] as $el)
-                        <option value="{{$el->id}}" @if ($el->id == (request()->get('lawyer'))) selected @endif>{{$el->name}}</option>
+                        <option value="{{$el->id}}" @if ($el->id == (request()->get('lawyer'))) @php $lawyername = $el->name @endphp selected @endif>{{$el->name}}</option>
                     @endforeach
                 </select>
             </div>
-        @endif
+
     </form>
 @endsection
 
@@ -67,244 +66,124 @@
     </div>
     <div class = "row">
         @if (!config('app.debug'))
-            <div class = "row mt-2 h-50" >
+            <div class = "row mt-2" style="height: 700px;">
                 <iframe src="https://datalens.yandex/gwhlvrc5b8es6"></iframe>
             </div>
         @endif
 
-        <div class = "row mt-2">
-            <div class = "col-4">
-                <div class = "card border-light">
-                    <div class="card-body">
-                        <h5 class="card-title d-flex justify-content-between">
-                            <div>Задачи поставлены</div>
-                            <div><i class="fa-solid fa-list-check"></i></div>
-                        </h5>
-                        @if(count($all['alltasks']) == 0)
-                            <h1 class="card-text">0
-                            </h1>
-                        @endif
-                        <table class="table table-sm">
-                            <tbody>
-                            @foreach($all['alltasks'] as $el)
-                                <tr class="my-3"><td><a href="tasks/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a></td><td>{{$el->client}}</td></tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class = "col-4"></div>
-            <div class = "col-4">
-                <div class = "card border-light">
-                    <div class="card-body">
-                        <h5 class="card-title d-flex justify-content-between">
-                            <div>Задачи просрочены</div>
-                            <div><i class="fa-sharp fa-solid fa-exclamation"></i></div>
-                        </h5>
-                        @if(count($all['alltaskstime']) == 0)
-                            <h1 class="card-text">0
-                            </h1>
-                        @endif
-                        <table class="table table-sm">
-                            <tbody>
-                            @foreach($all['alltaskstime'] as $el)
-                                <tr class="my-3">
-                                    <td><a href="tasks/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a></td><td>{{$el["date"]["value"]}}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class = "row  mt-2">
-                <div class = "col-4">
-                    <div class = "card border-light">
-                        <div class="card-body">
-                            <h5 class="card-title d-flex justify-content-between">
-                                <div>Новые задачи</div>
-                                <div><i class="fa-sharp fa-regular fa-circle"  style="--fa-primary-color: dodgerblue;"></i></div>
-                            </h5>
-                            @if(count($all['alltasksnew']) == 0)
-                                <h1 class="card-text">0
-                                </h1>
-                            @endif
-                            <table class="table table-sm">
-                                <tbody>
-                                @foreach($all['alltasksnew'] as $el)
-                                    <tr class="my-3"><td><a href="tasks/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a></td><td>{{$el->client}}</td></tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class = "col-4">
-                    <div class = "card border-light">
-                        <div class="card-body">
-                            <h5 class="card-title d-flex justify-content-between">
-                                <div>Задачи</div>
-                                <div><i class="fa-sharp fa-solid fa-calendar-day"></i></div>
-                            </h5>
-                            @if(count($all['alltaskstoday']) == 0)
-                                <h1 class="card-text">0
-                                </h1>
-                            @endif
-                            <table class="table table-sm">
-                                <tbody>
-                                @foreach($all['alltaskstoday'] as $el)
-                                    <tr class="my-3">
-                                        <td><a href="tasks/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a></td><td>{{$el->client}}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class = "col-4"></div>
-                <div class = "row">
-                    <div class = "col-4">
-                        <div class = "card border-light">
-                            <div class="card-body">
-                                <h5 class="card-title d-flex justify-content-between">
-                                    <div>Клиенты</div>
-                                    <div><i class="fa-sharp fa-solid fa-person"></i></div>
-                                </h5>
-                                @if(count($all['allclients']) == 0)
-                                    <h1 class="card-text">0
-                                    </h1>
-                                @endif
-                                <table class="table table-sm">
-                                    <tbody>
-                                    @foreach($all['allclients'] as $el)
-                                        <tr class="my-3"><td><a href="clients/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a></td><td>{{$el->phone}}</td><td>{{$el->source}}</td></tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "col-4">
-                        <div class = "card border-light">
-                            <div class="card-body">
-                                <h5 class="card-title d-flex justify-content-between">
-                                    <div>Договоры</div>
-                                    <div><i class="fa-sharp fa-solid fa-file-word"></i></div>
-                                </h5>
-                                @if(count($all['alldogovors']) == 0)
-                                    <h1 class="card-text">0
-                                    </h1>
-                                @endif
-                                <table class="table table-sm">
-                                    <tbody>
-                                    @foreach($all['alldogovors'] as $el)
-                                        <tr class="my-3"><td><a href="{{$el->url}}" class="text-decoration-none" target="_blank">{{$el->name}}<i class="bi bi-cloud-download mx-3"> </i></a></td><td>{{$el->allstoimost}}</td></tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class = "col-4">
-                        <div class = "card border-light">
-                            <div class="card-body">
-                                <h5 class="card-title d-flex justify-content-between">
-                                    <div>Платежи</div>
-                                    <div><i class="fa-sharp fa-solid fa-file-invoice-dollar"></i></div>
-                                </h5>
-                                @if(count($all['allpayments']) == 0)
-                                    <h1 class="card-text">0
-                                    </h1>
-                                @endif
-                                <table class="table table-sm">
-                                    <tbody>
-                                    @foreach($all['allpayments'] as $el)
-                                        <tr class="my-3"><td><a href="payments/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->client}}</a></td><td>{{$el->summ}}</td></tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class = "row mt-2">
-                <div class = "col-4">
-                    <div class = "card border-light">
-                        <div class="card-body">
-                            <h5 class="card-title d-flex justify-content-between">
-                                <div>Лиды</div>
-                                <div><i class="fa-sharp fa-solid fa-person-circle-plus"></i></div>
-                            </h5>
-                            @if(count($all['allleads']) == 0)
-                                <h1 class="card-text">0
-                                </h1>
-                            @endif
-                            <table class="table table-sm">
-                                <tbody>
-                                @foreach($all['allleads'] as $el)
-                                    <tr class="my-3"><td><a href="leads/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a></td><td>{{$el->phone}}</td></tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class = "col-4">
-                    <div class = "card border-light">
-                        <div class="card-body">
-                            <h5 class="card-title d-flex justify-content-between">
-                                <div>Лиды просрочены</div>
-                                <div><i class="fa-sharp fa-solid fa-person-walking-luggage"></i></div>
-                            </h5>
-                            @if(count($all['allleadsoverdue']) == 0)
-                                <h1 class="card-text">0
-                                </h1>
-                            @endif
-                            <table class="table table-sm">
-                                <tbody>
-                                @foreach($all['allleadsoverdue'] as $el)
-                                    <tr class="my-3"><td><a href="leads/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a></td><td>{{$el->phone}}</td></tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class = "row">
-                <div class="card m-3 pb-5 w-75">
-                    <div class="card-body">
-                        <div class = "d-flex justify-content-between align-items-center mb-3">
-                           <span class="fs-4">Доходы</span>
-                            <span>
-                                <a class="btn btn-light" href="/payments">
-                                    <i class="bi-three-dots"></i>
-                                </a>
-                            </span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="col-3 text-left"><i class="bi bi-wallet2 " style="font-size: 3rem; color: indigo;"></i></div>
-                            <div class="col-9 d-flex justify-content-center text-center">
-                                <div class="col d-flex flex-column justify-content-center">
-                                    <h6 class="card-subtitle mb-2 text-muted">привлек + превышение</h6>
-                                    <div class="fs-2 mx-3">{{$data['paymentsattr']}} + {{$data['paymentsmodifyattr']}}</div>
-                                </div>
-                                <div class="col d-flex flex-column justify-content-center">
-                                    <h6 class="card-subtitle mb-2 text-muted">продал  + превышение</h6>
-                                    <div class="fs-2 mx-3">{{$data['paymentsseller']}} + {{$data['paymentsmodifyseller']}}</div>
-                                </div>
-                                <div class="col d-flex flex-column justify-content-center">
-                                    <h6 class="card-subtitle mb-2 text-muted">развил направление</h6>
-                                    <div class="fs-2 mx-3">{{$data['paymentsdev']}}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm" style="background-color: #6f42c1;">  
+            <div class="lh-1">
+            <h1 class="h6 mb-0 text-white lh-1">Просрочка</h1>
+            <small>{{$lawyername}}</small>
             </div>
         </div>
+
+
+            <div class="my-3 p-3 bg-body rounded shadow-sm">
+                <h6 class="border-bottom pb-2 mb-0">
+                    Я - исполнитель
+                </h6>
+                    @foreach($all['alltaskstime'] as $el)
+                        <div class="d-flex text-body-secondary pt-3">
+                            <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"></rect><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+                            <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+                                <div class="d-flex justify-content-between">  
+                                    <div>
+                                        <strong class="text-gray-dark">@ {{$el->client}}</strong>   
+                                    </div>
+                                    <span 
+                                        @if ($el->tag == "неважно")
+                                            class="badge bg-secondary rounded-pill"
+                                        @elseif($el->tag == "срочно ")
+                                            class="badge bg-danger rounded-pill"
+                                        @elseif($el->tag == "приоритет")
+                                            class="badge bg-success rounded-pill"
+                                        @elseif($el->tag == "перенос")
+                                            class="badge bg-info rounded-pill"
+                                        @else
+                                            class="badge bg-secondary rounded-pill"
+                                        @endif
+                                        
+                                        ><div>{{$el->tag}} - {{$el->duration}}</div></span> 
+                                </div>
+                                <a href="tasks/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a>
+                            </div>
+                            
+                        </div>
+                    @endforeach
+            </div>
+
+            <div class="my-3 p-3 bg-body rounded shadow-sm">
+                <h6 class="border-bottom pb-2 mb-0">
+                    Я - постановщик
+                </h6>
+                    @foreach($all['alltaskspostanovshik'] as $el)
+                        <div class="d-flex text-body-secondary pt-3">
+                            <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"></rect><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text></svg>
+                            <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+                                <div class="d-flex justify-content-between">  
+                                    <div>
+                                        <strong class="text-gray-dark">@ {{$el->client}}</strong>   
+                                    </div>
+                                    <span 
+                                        @if ($el->tag == "неважно")
+                                            class="badge bg-secondary rounded-pill"
+                                        @elseif($el->tag == "срочно ")
+                                            class="badge bg-danger rounded-pill"
+                                        @elseif($el->tag == "приоритет")
+                                            class="badge bg-success rounded-pill"
+                                        @elseif($el->tag == "перенос")
+                                            class="badge bg-info rounded-pill"
+                                        @else
+                                            class="badge bg-secondary rounded-pill"
+                                        @endif
+                                        
+                                        ><div>{{$el->tag}} - {{$el->duration}}</div></span> 
+                                </div>
+                                <a href="tasks/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a>
+                            </div>
+                            
+                        </div>
+                    @endforeach
+            </div>
+
+            
+            <div class="my-3 p-3 bg-body rounded shadow-sm">
+                <h6 class="border-bottom pb-2 mb-0">
+                    Я - соисполнитель
+                </h6>
+                    @foreach($all['alltaskssoispolnitel'] as $el)
+                        <div class="d-flex text-body-secondary pt-3">
+                            <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#e83e8c"></rect><text x="50%" y="50%" fill="#e83e8c" dy=".3em">32x32</text></svg>
+                            <div class="pb-3 mb-0 small lh-sm border-bottom w-100">
+                                <div class="d-flex justify-content-between">  
+                                    <div>
+                                        <strong class="text-gray-dark">@ {{$el->client}}</strong>   
+                                    </div>
+                                    <span 
+                                        @if ($el->tag == "неважно")
+                                            class="badge bg-secondary rounded-pill"
+                                        @elseif($el->tag == "срочно ")
+                                            class="badge bg-danger rounded-pill"
+                                        @elseif($el->tag == "приоритет")
+                                            class="badge bg-success rounded-pill"
+                                        @elseif($el->tag == "перенос")
+                                            class="badge bg-info rounded-pill"
+                                        @else
+                                            class="badge bg-secondary rounded-pill"
+                                        @endif
+                                        
+                                        ><div>{{$el->tag}} - {{$el->duration}}</div></span> 
+                                </div>
+                                <a href="tasks/{{$el->id}}" class="text-decoration-none" target="_blank">{{$el->name}}</a>
+                            </div>
+                            
+                        </div>
+                    @endforeach
+            </div>
+        
+
+
+
     </div>
 @endsection

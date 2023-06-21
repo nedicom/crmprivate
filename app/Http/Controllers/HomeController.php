@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\ClientsModel;
 use App\Models\Leads;
-use App\Models\Meetings;
 use App\Models\Tasks;
 use App\Models\Payments;
 use App\Models\Dogovor;
@@ -55,27 +54,9 @@ class HomeController extends Controller
                 'leads' => Leads::with('userFunc')
                     ->where('lawyer', $crtuser)
                     ->count(),
-                'meeting' => Meetings::with('userFunc')
-                    ->where('lawyer', $crtuser)
-                    ->count(),
                 'tasks' => Tasks::with('userFunc')
                     ->where('lawyer', $crtuser)
-                    ->count(),
-                'paymentsseller' => Payments::where('nameOfSeller', $crtuser)
-                    ->$where('created_at', (Carbon::today()))
-                    ->sum('SallerSalary'),
-                'paymentsmodifyseller' => Payments::where('nameOfSeller', $crtuser)
-                    ->$where('created_at', (Carbon::today()))
-                    ->sum('modifySeller'),
-                'paymentsattr' => Payments::where('nameOfAttractioner', $crtuser)
-                    ->$where('created_at', (Carbon::today()))
-                    ->sum('AttaractionerSalary'),
-                'paymentsmodifyattr' => Payments::where('nameOfAttractioner', $crtuser)
-                    ->$where('created_at', (Carbon::today()))
-                    ->sum('modifyAttraction'),
-                'paymentsdev' => Payments::where('directionDevelopment', $crtuser)
-                    ->$where('created_at', (Carbon::today()))
-                    ->sum('DeveloperSalary'),
+                    ->count(),               
                 'datalawyers' =>  User::all()
             ],
         ], [
@@ -92,6 +73,12 @@ class HomeController extends Controller
                 'alltaskstime' => Tasks::where('lawyer', $crtuser)
                     ->where('status', 'просрочена')
                     ->get(),
+                'alltaskspostanovshik' => Tasks::where('postanovshik', $crtuser)
+                    ->where('status', 'просрочена')
+                    ->get(),
+                'alltaskssoispolnitel' => Tasks::where('soispolintel', $crtuser)
+                    ->where('status', 'просрочена')
+                    ->get(),                    
                 'alltasksnew' => Tasks::where('lawyer', $crtuser)
                     ->where('new', 1)
                     ->get(),
