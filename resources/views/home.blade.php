@@ -22,7 +22,9 @@
                 <select class="form-select form-select-sm input-home-filter" name="lawyer">
                     <option value="">юрист</option>
                     @foreach($data['datalawyers'] as $el)
-                        <option value="{{$el->id}}" @if ($el->id == (request()->get('lawyer'))) @php $lawyername = $el->name @endphp selected @endif>{{$el->name}}</option>
+                        <option value="{{$el->id}}" @if ($el->id == (request()->get('lawyer'))) 
+                            selected 
+                            @endif>{{$el->name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -74,7 +76,7 @@
         <div class="d-flex align-items-center p-3 my-3 text-white rounded shadow-sm" style="background-color: #6f42c1;">  
             <div class="lh-1">
             <h1 class="h6 mb-0 text-white lh-1">Просрочка</h1>
-            <small>{{$lawyername}}</small>
+            <small>{{$crtuser->name}}</small>
             </div>
         </div>
 
