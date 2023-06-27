@@ -80,7 +80,7 @@ class User extends Authenticatable //implements MustVerifyEmail
     {
         $imgNames = ["rabbit.png", "bear.png", "cat.png"];
         $randKey = rand(0, 2);
-        $avatar = '/public/avatars/' . $imgNames[$randKey]; // public_path('/avatars' . $imgNames[$randKey]);
+        $avatar = '/avatars/' . $imgNames[$randKey]; // public_path('/avatars' . $imgNames[$randKey]);
 
         return $avatar;
     }

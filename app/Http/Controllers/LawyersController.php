@@ -24,7 +24,7 @@ use Illuminate\Http\File;
 
         $file->move(public_path('/avatars'),  $name);
 
-        $user -> avatar =  '/public/avatars/'.$name;
+        $user -> avatar =  '/avatars/'.$name;
         $user -> save();
 
         return redirect() -> route('home') -> with('success', 'Все в порядке, теперь у Вас сногсшибательный аватар');

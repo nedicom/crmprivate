@@ -16,7 +16,7 @@ return new class extends Migration
         /*Schema::table('users', function (Blueprint $table) {
             $input = ["rabbit.png", "bear.png", "cat.png"];
             $rand_key =rand(0, 2);
-            $table->string('avatar')->default('/public/avatars/'.$input[$rand_key]);
+            $table->string('avatar')->default('/avatars/'.$input[$rand_key]);
         });*/
     }
 
