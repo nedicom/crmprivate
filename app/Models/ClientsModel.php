@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
  * @property string $name
  * @property string $phone
  * @property string $source
+ * @property string $description
  * @property int $created_at
  * @property int $updated_at
  * @property boolean $status
