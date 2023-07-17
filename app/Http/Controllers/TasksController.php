@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Repository\TaskRepository;
 use App\Services\TaskService;
-use App\Models\TaskPaymentAssign;
+use Illuminate\Support\Facades\View;
 
 class TasksController extends Controller
 {
@@ -199,14 +199,7 @@ class TasksController extends Controller
     {
         if ($request->has('query')) {
             $query = $this->repository->getByClientQuery($request->input('query'));
-
-            $output = '<ul class="list-group">';
-            foreach ($query as $value) {
-                $output .= '<li class="list-group-item taskList taskIndex"
-                    data-task-id="'. $value->id .'"><a href="#" class="text-decoration-none"><span class="name-client">' .
-                    $value->client . '</span> - ' . $value->name . ' - ' . $value->created_at .'</a></li>';
-            }
-            $output .= '</ul>';
+            $output = View::make('inc/modal/_part-edit-payment', compact('query'))->render();
 
             return $output;
         }

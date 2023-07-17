@@ -22,12 +22,14 @@
                     <li><a class="dropdown-item" href="{{route('tasks')}}?checkedlawyer={{ Auth::user()->id}}&type=звонок">Звонки</a></li>
                 </ul>
             </li>
-            <li class="nav-item"><a href="{{ route('showservices') }}" class="nav-link {{ (request()->is('services*')) ? 'active' : '' }}">Услуги</a></li>
+            @can ('manage-services')
+                <li class="nav-item"><a href="{{ route('services.index') }}" class="nav-link {{ (request()->is('services*')) ? 'active' : '' }}">Услуги</a></li>
+            @endcan
             <li class="nav-item"><a href="{{ route('payments') }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">Платежи</a></li>
             <li class="nav-item"><a href="{{ route('lawyers') }}" class="nav-link {{ (request()->is('lawyers*')) ? 'active' : '' }}">Юристы</a></li>
-            @if (Auth::user()->isAdmin() || Auth::user()->isModerator())
+            @can ('manage-users')
                 <li class="nav-item"><a href="{{ route('users.index') }}" class="nav-link {{ (request()->is('users/*')) ? 'active' : '' }}">Пользователи</a></li>
-            @endif
+            @endcan
         </ul>
         <ul class="nav nav-pills">
             <li class="nav-item">

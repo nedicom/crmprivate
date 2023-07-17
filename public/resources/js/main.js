@@ -149,10 +149,12 @@ $(document).ready(function() {
             '</td></tr>'
         );
     });
+
     // Удаление в таблице строки платежа
     $(document).on('click', '.remove-tr', function() {
         $(this).parents('tr').remove();
     });
+
     // Выбор платежа из выпадающего списка в форме Задачи
     $(document).on('click', '.paymentIndex', function() {
         var parent = $(this).parents($('.payment-input-block'));
@@ -162,6 +164,67 @@ $(document).ready(function() {
         $(this).parents($('#paymentsTable')).children('tr:last').children('td.info-payment').text($(this).text());
         $('.paymentsList').fadeOut();
     });
+
+    // Подгрузка списка услуг при клике на поле "Название задачи" у формы Задач
+    $(document).on('keyup', '.field-name-task', function() {
+        if ($(this).val().length >= 3) {
+            $.ajax({
+                url: "/services/ajax/list",
+                method: "POST",
+                success: function (data) {
+                    var list = $('.popup-list-services');
+                    list.fadeIn();
+                    list.html(data.content);
+                }
+            });
+        }
+    });
+
+    // Выбор услуги из выпадающего списка в форме Задачи
+    $(document).on('click', '.serviceIndex', function() {
+        var valueId = $(this).attr('data-service-id');
+
+        $.ajax({
+            url: "/services/ajax/element",
+            method: "POST",
+            data: {serviceId: valueId},
+            success: function (data) {
+                if (data.success) {
+                    $('.taskModal input[name="service_id"]').val(data.id);
+                    $('.taskModal .service_ref_name').fadeIn();
+                    $('.taskModal .service_ref_name .service_ref_val').text(data.name);
+                    if (data.duration !== null) {
+                        $('.taskModal input[name="duration"]').val(data.duration);
+                    }
+                } else {
+                    $('.taskModal .service_ref_name').text(data.message).css('color', 'red');
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            },
+        });
+        $('.popup-list-services').fadeOut();
+    });
+
+    // Поиск услуг через фильтр в форме Задач
+    $(document).on('keyup', '.taskModal input[name="filter-name-service"]', function () {
+        var value = $(this).val();
+
+        $.ajax({
+            url: "/services/ajax/search",
+            method: "GET",
+            data: {query: value},
+            success: function (data) {
+                $('.taskModal .holder-services-list > .list-group').html(data.content);
+            },
+        });
+    });
+
+    // Скрыть выпадающие список услуг в форме Задач
+    $(document).on('click', '.popup-list-services .close', function () {
+       $(this).parent($('.popup-list-services')).fadeOut();
+    })
 });
 
 

@@ -1,4 +1,4 @@
-<div class="modal fade" id="edittaskModal">
+<div class="modal fade taskModal" id="edittaskModal">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
             <div class ="modal-header">
@@ -6,11 +6,21 @@
             </div>
             <div class ="modal-body d-flex justify-content-center">
                 <div class ="col-10">
-                    <form action="{{route('editTaskById', $data -> id)}}" autocomplete="off" method="post">
+                    <form action="{{route('editTaskById', $data->id)}}" autocomplete="off" method="post">
                         @csrf
                         <div class="form-group mb-3">
                             <label for="nameoftask">Укажите название<span class="text-danger">*</span></label>
-                            <input type = "text" name="nameoftask" placeholder="" id="nameoftask" value="{{$data->name}}" class="form-control" required>
+                            <input type="text" name="nameoftask" placeholder="" id="nameoftask" value="{{$data->name}}" class="field-name-task form-control" required>
+                            <!-- Связанная услуга -->
+                            <span @if (!$data->service) style="display: none" @endif class="service_ref_name">
+                                <strong style="color: red;">Закрепленная услуга: </strong>
+                                <span class="service_ref_val">@if ($data->service) {{ $data->service->name }} @endif</span>
+                            </span>
+                            <!-- Выпадающий блок списка услуг -->
+                            <div style="display:none" class="popup-list-services">
+                                <!-- Generate content from ajax request -->
+                            </div>
+                            <input type="hidden" name="service_id" value="">
                         </div>
                         <div class="form-group mb-3">
                             <label for="description">Описание</label>
@@ -21,14 +31,16 @@
                                 <label for="date">Время начала:<span class="text-danger">*</span></label>
                                 <input type="text" id="date" value="{{$data->date['value']}}" class="form-control" name="date">
                             </div>
-                            <div class="col-4 form-group mb-3">
-                                <span>Продолжительность<span class="text-danger">*</span></span>
-                                <div class="input-group form-group mb-3">
-                                    <label class="input-group-text" for="duration"><i class="bi bi-stopwatch"></i></label>
-                                    <input type = "number" name="duration" value="{{$data->duration}}" min="0.25" max="25" step="0.25" id="duration" class="form-control">
-                                    <span class="input-group-text">час</span>
+                            @can ('manage-services')
+                                <div class="col-4 form-group mb-3">
+                                    <span>Продолжительность<span class="text-danger">*</span></span>
+                                    <div class="input-group form-group mb-3">
+                                        <label class="input-group-text" for="duration"><i class="bi bi-stopwatch"></i></label>
+                                        <input type="number" name="duration" value="{{$data->duration}}" min="0.25" max="25" step="0.25" id="duration" class="form-control">
+                                        <span class="input-group-text">час</span>
+                                    </div>
                                 </div>
-                            </div>
+                            @endcan
                             <div class="col-4 form-group mb-3">
                                 <label for="name">Яндекс-диск</label>
                                 <input type = "url" name="hrftodcm" placeholder="https://disk.yandex.ru" id="hrftodcm"

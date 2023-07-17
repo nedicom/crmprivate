@@ -30,6 +30,9 @@ use Illuminate\Support\Facades\Auth;
  * @property boolean $new
  * @property int $deal_id
  * @property int $lead_id
+ * @property int $service_id
+ *
+ * @property Services|null $service
  */
 class Tasks extends Model
 {
@@ -43,7 +46,6 @@ class Tasks extends Model
 
     use HasFactory;
 
-    //protected $fillable = ['*'];
     protected $guarded = [];
 
     protected function date(): Attribute
@@ -71,7 +73,7 @@ class Tasks extends Model
     public static function new(TasksRequest $request): self
     {
         $task = new self();
-        $task->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', '_token']));
+        $task->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', 'filter-name-service', '_token']));
         $task->name = $request->nameoftask;
         $task->clientid = $request->clientidinput;
         $task->deal_id = ($request->deals !== null) ? $request->deals : null;
@@ -90,7 +92,7 @@ class Tasks extends Model
     public static function newFromLead(TasksRequest $request): self
     {
         $task = new self();
-        $task->fill($request->except(['nameoftask', 'lead_id',  '_token']));
+        $task->fill($request->except(['nameoftask', 'lead_id', 'filter-name-service', '_token']));
         $task->name = $request->nameoftask;
         $task->lead_id = $request->lead_id;
         $task->new = static::STATE_NEW;
@@ -106,7 +108,7 @@ class Tasks extends Model
      */
     public function edit(TasksRequest $request): void
     {
-        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', '_token']));
+        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', 'filter-name-service', '_token']));
         $this->name = $request->nameoftask;
         $this->clientid = $request->clientidinput;
         $this->deal_id = ($request->deals !== null) ? $request->deals : null;
@@ -119,6 +121,14 @@ class Tasks extends Model
     public function deal()
     {
         return $this->belongsTo(Deal::class, 'deal_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function service()
+    {
+        return $this->belongsTo(Services::class, 'service_id');
     }
 
     /**
