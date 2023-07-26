@@ -76,7 +76,7 @@ class ServicesController extends Controller
      */
     public function ajaxList(Request $request)
     {
-        $services = $this->repository->getAll();
+        $services = $this->repository->getByNames($request->query('query'));
         $html = View::make('inc/modal/_part-edit-task', compact('services'))->render();
 
         return response()->json([
@@ -109,21 +109,6 @@ class ServicesController extends Controller
             'id' => $service->id,
             'name' => $service->name,
             'duration' => $service->execution_time,
-        ]);
-    }
-
-    /**
-     * Поиск через фильтр по Ajax запросу
-     * @param string $query
-     * @return mixed
-     */
-    public function ajaxSearch(Request $request)
-    {
-        $services = $this->repository->getByNames($request->query('query'));
-        $html = View::make('inc/modal/_list-services', compact('services'))->render();
-
-        return response()->json([
-            'content' => $html,
         ]);
     }
 }

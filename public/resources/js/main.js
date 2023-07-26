@@ -47,7 +47,7 @@ $(document).ready(function() {
         var type = element.attr('data-type');
         document.getElementById("taskname").innerHTML = type;
         document.getElementById("nameoftask").value = '';
-        document.getElementById("duration").value = 1;
+        document.getElementById("duration").value = 0.1;
         document.getElementById("type").value = type;
         var collection = document.getElementsByClassName("hideme")
         for (let i = 0; i < collection.length; i++) {
@@ -167,10 +167,13 @@ $(document).ready(function() {
 
     // Подгрузка списка услуг при клике на поле "Название задачи" у формы Задач
     $(document).on('keyup', '.field-name-task', function() {
-        if ($(this).val().length >= 3) {
+        var value = $(this).val();
+
+        if (value.length >= 3) {
             $.ajax({
                 url: "/services/ajax/list",
-                method: "POST",
+                data: {query: value},
+                method: "GET",
                 success: function (data) {
                     var list = $('.popup-list-services');
                     list.fadeIn();
@@ -205,20 +208,6 @@ $(document).ready(function() {
             },
         });
         $('.popup-list-services').fadeOut();
-    });
-
-    // Поиск услуг через фильтр в форме Задач
-    $(document).on('keyup', '.taskModal input[name="filter-name-service"]', function () {
-        var value = $(this).val();
-
-        $.ajax({
-            url: "/services/ajax/search",
-            method: "GET",
-            data: {query: value},
-            success: function (data) {
-                $('.taskModal .holder-services-list > .list-group').html(data.content);
-            },
-        });
     });
 
     // Скрыть выпадающие список услуг в форме Задач

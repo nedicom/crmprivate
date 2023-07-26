@@ -33,16 +33,14 @@
                                 <label for="date">Время начала: <span class="text-danger">*</span></label>
                                 <input type="text" id="date" class="form-control" name="date" min="{{ date('Y-m-d H:i') }}">
                             </div>
-                            @can ('manage-services')
-                                <div class="col-4 form-group mb-3">
-                                    <span>Продолжительность<span class="text-danger">*</span>
-                                    <div class="input-group form-group mb-3">
-                                        <label class="input-group-text" for="duration"><i class="bi bi-stopwatch"></i></label>
-                                        <input type = "number" name="duration" value="1" min="0.25" max="25" step="0.25" id="duration" class="form-control" />
-                                        <span class="input-group-text">час</span>
-                                    </div>
+                            <div class="col-4 form-group mb-3">
+                                <span>Продолжительность<span class="text-danger">*</span>
+                                <div class="input-group form-group mb-3">
+                                    <label class="input-group-text" for="duration"><i class="bi bi-stopwatch"></i></label>
+                                    <input  @cannot ('manage-services') disabled @endcannot type="number" name="duration" value="0.1" min="0.1" max="25" step="0.25" id="duration" class="form-control" />
+                                    <span class="input-group-text">час</span>
                                 </div>
-                            @endcan
+                            </div>
                             <div class="col-4 form-group mb-3 hideme">
                                 <label for="name">Яндекс-диск</label>
                                 <input type="url" name="hrftodcm" placeholder="https://disk.yandex.ru" id="hrftodcm" class="form-control">

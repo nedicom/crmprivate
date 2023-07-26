@@ -91,7 +91,7 @@ Route::middleware(['verified'])->group(function () {
 
     Route::resource('services', ServicesController::class)->except('show', 'edit')->middleware(['auth', 'can:manage-services']);
     Route::post('/services/edit/{service}', [ServicesController::class, 'ajaxEdit'])->name('services.edit')->middleware(['auth', 'can:manage-services']);
-    Route::post('/services/ajax/list', [ServicesController::class, 'ajaxList'])->name('services.list.ajax')->middleware('auth');
+    Route::get('/services/ajax/list', [ServicesController::class, 'ajaxList'])->name('services.list.ajax')->middleware('auth');
     Route::post('/services/ajax/element', [ServicesController::class, 'ajaxElement'])->name('services.element.ajax')->middleware('auth');
     Route::get('/services/ajax/search', [ServicesController::class, 'ajaxSearch'])->name('services.search.ajax')->middleware('auth');
 

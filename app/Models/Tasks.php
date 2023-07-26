@@ -73,7 +73,7 @@ class Tasks extends Model
     public static function new(TasksRequest $request): self
     {
         $task = new self();
-        $task->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', 'filter-name-service', '_token']));
+        $task->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', '_token']));
         $task->name = $request->nameoftask;
         $task->clientid = $request->clientidinput;
         $task->deal_id = ($request->deals !== null) ? $request->deals : null;
@@ -92,7 +92,7 @@ class Tasks extends Model
     public static function newFromLead(TasksRequest $request): self
     {
         $task = new self();
-        $task->fill($request->except(['nameoftask', 'lead_id', 'filter-name-service', '_token']));
+        $task->fill($request->except(['nameoftask', 'lead_id', '_token']));
         $task->name = $request->nameoftask;
         $task->lead_id = $request->lead_id;
         $task->new = static::STATE_NEW;
@@ -108,7 +108,7 @@ class Tasks extends Model
      */
     public function edit(TasksRequest $request): void
     {
-        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', 'filter-name-service', '_token']));
+        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', '_token']));
         $this->name = $request->nameoftask;
         $this->clientid = $request->clientidinput;
         $this->deal_id = ($request->deals !== null) ? $request->deals : null;
