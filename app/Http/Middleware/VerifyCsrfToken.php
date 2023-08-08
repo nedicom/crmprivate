@@ -15,5 +15,6 @@ class VerifyCsrfToken extends Middleware
         '/tasks/list/ajax',
         '/services/ajax/*',
         '/services/edit/*',
+        '/calendar/*',
     ];
 }

@@ -12,7 +12,7 @@ class ServiceRepository
      */
     public function getAll()
     {
-        $query = Services::select(['id', 'name', 'execution_time'])
+        $query = Services::select(['id', 'name', 'execution_time', 'type_execution_time'])
             ->orderBy('name', 'asc')
             ->limit(10)
             ->get();
@@ -27,7 +27,7 @@ class ServiceRepository
      */
     public function getByNames(string $query)
     {
-        $query = Services::select(['id', 'name', 'execution_time'])
+        $query = Services::select(['id', 'name', 'execution_time', 'type_execution_time'])
             ->where('name', 'LIKE', '%' . $query . '%')
             ->orderBy('name', 'ASC')
             ->get();

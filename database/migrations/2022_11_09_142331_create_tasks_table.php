@@ -20,7 +20,7 @@ return new class extends Migration
           $table->string('lawyer');
           $table->datetime('date');
           $table->string('status');
-          $table->double('duration', 8, 2);;
+          $table->double('duration', 8, 2);
           $table->boolean('new')->default(true);
           $table->timestamps();
         });

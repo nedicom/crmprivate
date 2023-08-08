@@ -13,7 +13,6 @@ use App\Http\Controllers\DogovorController;
 use App\Http\Controllers\GetclientAJAXController;
 use App\Http\Controllers\TaskAJAXController;
 use App\Http\Controllers\BotController;
-use App\Http\Controllers\CalendarController;
 use Illuminate\Support\Facades\Auth;
 use \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 
@@ -33,12 +32,11 @@ Route::get('/', function () {
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
 Route::get('/contacts', function () {return view('contacts');})->middleware('auth');
 
-// CalDav for yandex and other
-Route::controller(CalendarController::class)->group(function () {
-    Route::get('/calendar/{lawyerid}', 'calendar')->name('calendar');
-});
+// iCalendar
+Route::get('/calendar/create', [\App\Http\Controllers\iCalendar\ManageController::class, 'create'])->name('calendar.create');
+Route::get('/calendar/{userID}/calendar.ics', [\App\Http\Controllers\iCalendar\ManageController::class, 'browse'])->name('calendar.browse');
 
-Route::middleware(['verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::controller(LawyersController::class)->group(function () {
         Route::post('/avatar/add', 'addavatar')->name('add-avatar');
     });

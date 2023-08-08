@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Events\Task\TaskCompleted;
 use App\Events\Task\TaskCreated;
+use App\Events\Task\TaskDeleted;
+use App\Events\Task\TaskUpdated;
 use App\Models\ClientsModel;
 use Illuminate\Http\Request;
 use App\Http\Requests\TasksRequest;
@@ -153,8 +155,11 @@ class TasksController extends Controller
         if ($task->status === $task::STATUS_COMPLETE) {
             $task->donetime = Carbon::now();
             $task->save();
+            // Events
             TaskCompleted::dispatch($task);
         }
+        //Events
+        TaskUpdated::dispatch($task);
 
         return redirect()->route('showTaskById', $id)->with('success', 'Все в порядке, событие обновлено');
     }
@@ -166,7 +171,10 @@ class TasksController extends Controller
      */
     public function delete(int $id)
     {
-        Tasks::find($id)->delete();
+        $task = Tasks::find($id);
+        // Events
+        TaskDeleted::dispatch($task);
+        $task->delete();
 
         return redirect()->route('tasks')->with('success', 'Все в порядке, задача удалена');
     }

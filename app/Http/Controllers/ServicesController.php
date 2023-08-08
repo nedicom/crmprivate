@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\TaskHelper;
 use App\Models\Services;
 use App\Http\Requests\ServicesRequest;
 use Illuminate\Http\Request;
@@ -36,7 +37,8 @@ class ServicesController extends Controller
     public function store(ServicesRequest $request)
     {
         $service = new Services();
-        $service->fill($request->except('_token'));
+        $service->fill($request->except('_token', 'execution_time'));
+        $service->setDuration($request->input('execution_time'));
         $service->saveOrFail();
 
         return redirect()->route('services.index')->with('success', 'Все в порядке, услуга добавлена');
@@ -44,7 +46,8 @@ class ServicesController extends Controller
 
     public function update(ServicesRequest $request, Services $service)
     {
-        $service->fill($request->except('_token'));
+        $service->fill($request->except('_token', 'execution_time'));
+        $service->setDuration($request->input('execution_time'));
         $service->update();
 
         return back()->with('success', 'Услуга была успешно обновлена.');
@@ -99,16 +102,20 @@ class ServicesController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Пожвлуйста проверьте значение service_id'
+                'message' => 'Пожалуйста проверьте значение service_id'
             ]);
         }
         $service = Services::find($id)->first();
+        $duration = TaskHelper::transformDuration($service->execution_time, $service->type_execution_time);
 
         return response()->json([
             'success' => true,
             'id' => $service->id,
             'name' => $service->name,
-            'duration' => $service->execution_time,
+            'duration' => [
+                'hours' => $duration['hours'],
+                'minutes' => $duration['minutes'],
+            ],
         ]);
     }
 }

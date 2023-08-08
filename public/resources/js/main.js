@@ -47,7 +47,6 @@ $(document).ready(function() {
         var type = element.attr('data-type');
         document.getElementById("taskname").innerHTML = type;
         document.getElementById("nameoftask").value = '';
-        document.getElementById("duration").value = 0.1;
         document.getElementById("type").value = type;
         var collection = document.getElementsByClassName("hideme")
         for (let i = 0; i < collection.length; i++) {
@@ -197,7 +196,8 @@ $(document).ready(function() {
                     $('.taskModal .service_ref_name').fadeIn();
                     $('.taskModal .service_ref_name .service_ref_val').text(data.name);
                     if (data.duration !== null) {
-                        $('.taskModal input[name="duration"]').val(data.duration);
+                        $('.taskModal input[name="duration[hours]"]').val(data.duration.hours);
+                        $('.taskModal input[name="duration[minutes]"]').val(data.duration.minutes);
                     }
                 } else {
                     $('.taskModal .service_ref_name').text(data.message).css('color', 'red');

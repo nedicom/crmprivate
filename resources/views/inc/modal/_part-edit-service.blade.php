@@ -14,10 +14,25 @@
         </div>
         <div class="form-group mb-3">
             <span>Время на выполнение<span class="text-danger">*</span></span>
-            <div class="input-group form-group mb-3">
-                <label class="input-group-text" for="execution_time"><i class="bi bi-stopwatch"></i></label>
-                <input type="number" name="execution_time" value="{{ $service->execution_time }}" min="0.25" max="25" step="0.25" id="execution_time" class="form-control">
-                <span class="input-group-text">час</span>
+            <div class="row">
+                <div class="col-6">
+                    <!-- Продолжительность в часах -->
+                    <div class="input-group">
+                        <label class="input-group-text" for="execution_time_h"><i class="bi bi-stopwatch"></i></label>
+                        <input type="number" name="execution_time[hours]"
+                               value="{{ \App\Helpers\TaskHelper::transformDuration($service->execution_time, $service->type_execution_time)['hours'] }}" min="0" max="24" step="1" id="execution_time_h" class="form-control" />
+                        <span class="input-group-text">час</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <!-- Продолжительность в минутах -->
+                    <div class="input-group">
+                        <label class="input-group-text" for="execution_time_m"><i class="bi bi-stopwatch"></i></label>
+                        <input type="number" name="execution_time[minutes]"
+                               value="{{ \App\Helpers\TaskHelper::transformDuration($service->execution_time, $service->type_execution_time)['minutes'] }}" min="0" max="60" step="1" id="execution_time_m" class="form-control" />
+                        <span class="input-group-text">мин</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-group mb-3">

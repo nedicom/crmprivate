@@ -26,23 +26,39 @@
                             <label for="description">Описание</label>
                             <textarea rows="3" name="description" placeholder="Немного подробнее о задаче (необязательно)" id="description" class="form-control">{{$data->description}}</textarea>
                         </div>
+                        <div class="form-group mb-3">
+                            <label for="name">Яндекс-диск</label>
+                            <input type = "url" name="hrftodcm" placeholder="https://disk.yandex.ru" id="hrftodcm"
+                            value="{{$data->hrftodcm}}" class="form-control">
+                        </div>
+
                         <div class="row">
                             <div class="col-4 form-group mb-3">
                                 <label for="date">Время начала:<span class="text-danger">*</span></label>
                                 <input type="text" id="date" value="{{$data->date['value']}}" class="form-control" name="date">
                             </div>
-                            <div class="col-4 form-group mb-3">
+                            <div class="col-8 form-group mb-3">
                                 <span>Продолжительность<span class="text-danger">*</span></span>
-                                <div class="input-group form-group mb-3">
-                                    <label class="input-group-text" for="duration"><i class="bi bi-stopwatch"></i></label>
-                                    <input @cannot ('manage-services') disabled @endcannot type="number" name="duration" value="{{$data->duration}}" min="0.1" max="25" step="0.1" id="duration" class="form-control">
-                                    <span class="input-group-text">час</span>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <!-- Продолжительность в часах -->
+                                        <div class="input-group">
+                                            <label class="input-group-text" for="duration_h"><i class="bi bi-stopwatch"></i></label>
+                                            <input type="number" name="duration[hours]"
+                                                value="{{ \App\Helpers\TaskHelper::transformDuration($data->duration, $data->type_duration)['hours'] }}" min="0" max="24" step="1" id="duration_h" class="form-control" />
+                                            <span class="input-group-text">час</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <!-- Продолжительность в минутах -->
+                                        <div class="input-group">
+                                            <label class="input-group-text" for="duration_m"><i class="bi bi-stopwatch"></i></label>
+                                            <input type="number" name="duration[minutes]"
+                                                value="{{ \App\Helpers\TaskHelper::transformDuration($data->duration, $data->type_duration)['minutes'] }}" min="0" max="60" step="1" id="duration_m" class="form-control" />
+                                            <span class="input-group-text">мин</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-4 form-group mb-3">
-                                <label for="name">Яндекс-диск</label>
-                                <input type = "url" name="hrftodcm" placeholder="https://disk.yandex.ru" id="hrftodcm"
-                                    value="{{$data->hrftodcm}}" class="form-control">
                             </div>
                         </div>
                         <div class="row">

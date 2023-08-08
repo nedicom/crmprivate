@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
  * @property \DateTime $date
  * @property string $status
  * @property double $duration
+ * @property string $type_duration
  * @property int $created_at
  * @property int $updated_at
  * @property int $clientid
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Auth;
  * @property string $description
  * @property \DateTime $donetime
  * @property string $type
+ * @property string $calendar_uid
  * @property boolean $new
  * @property int $deal_id
  * @property int $lead_id
@@ -44,6 +46,9 @@ class Tasks extends Model
     const STATE_NEW = 1;
     const STATE_OLD = 0;
 
+    const TYPE_DURATION_OLD = 'old';
+    const TYPE_DURATION_NEW = 'new';
+
     use HasFactory;
 
     protected $guarded = [];
@@ -55,12 +60,14 @@ class Tasks extends Model
         return Attribute::make(
             get: fn ($value) => [
                 'value' => Carbon::parse($value)->format('Y-m-d H:i'),
+                'rawValue' => Carbon::parse($value),
                 'day' => $weekMap[Carbon::parse($value)->dayOfWeekIso],
                 'month' => Carbon::parse($value)->format('j'),
                 'currentMonth' => Carbon::parse($value)->locale('ru_RU')->monthName,
                 'currentTime' => Carbon::parse($value)->format('H:i'),
                 'currentDay' => Carbon::parse($value)->format('j'),
                 'currentHour' => Carbon::parse($value)->format('H'),
+
             ],
         );
     }
@@ -80,6 +87,7 @@ class Tasks extends Model
         $task->new = static::STATE_NEW;
         $task->postanovshik = Auth::user()->id;
         $task->status = static::STATUS_WAITING;
+        $task->setDuration($request->input('duration'));
 
         return $task;
     }
@@ -98,6 +106,7 @@ class Tasks extends Model
         $task->new = static::STATE_NEW;
         $task->postanovshik = Auth::user()->id;
         $task->status = static::STATUS_WAITING;
+        $task->setDuration($request->input('duration'));
 
         return $task;
     }
@@ -112,6 +121,19 @@ class Tasks extends Model
         $this->name = $request->nameoftask;
         $this->clientid = $request->clientidinput;
         $this->deal_id = ($request->deals !== null) ? $request->deals : null;
+        $this->setDuration($request->input('duration'));
+    }
+
+    /** Устанавливаем значение продоолжительности
+     * @param array $duration
+     * @return void
+     */
+    public function setDuration(array $duration): void
+    {
+        $hours = (!empty($duration['hours'])) ? $duration['hours'] : 0;
+        $minutes = (!empty($duration['minutes'])) ? $duration['minutes'] : 0;
+        $this->duration = ($hours * 60) + $minutes;
+        $this->type_duration = static::TYPE_DURATION_NEW;
     }
 
     /**
