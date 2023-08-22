@@ -2,29 +2,10 @@
 
 namespace App\Http\Controllers\iCalendar;
 
-//use App\Services\Calendar\GenerateCalendar;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
-use App\Models\Tasks;
 
 class ManageController extends Controller
 {
-    /*private  $service;
-
-    public function __construct(GenerateCalendar $service)
-    {
-        $this->service = $service;
-    } */
-
-    /**
-     * Создание календаря
-     * @return void
-     */
-    /*public function create()
-    {
-        $this->service->createTaskCalendar(new Tasks());
-    }*/
-
     /**
      * Просмотр календаря
      */

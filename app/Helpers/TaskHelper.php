@@ -56,17 +56,4 @@ class TaskHelper
 
        return $str_time;
     }
-
-    /**
-     * Возврашаем обработанное значение в минутах
-     * @param $duration
-     * @param $type
-     * @return int
-     */
-    public static function convertToMinutesValue($duration, string $type): int
-    {
-        if ($duration !== 0 && $type === Tasks::TYPE_DURATION_OLD) {
-
-        }
-    }
 }

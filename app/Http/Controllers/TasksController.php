@@ -91,6 +91,9 @@ class TasksController extends Controller
         return redirect()->back()->with('success', 'Все в порядке, задача добавлена.');
     }
 
+    /**
+     * Создание задачи с раздела лидов
+     */
     public function storeByLead(TasksRequest $request)
     {
         $task = Tasks::newFromLead($request);

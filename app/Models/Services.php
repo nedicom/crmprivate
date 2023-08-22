@@ -29,7 +29,9 @@ class Services extends Model
      */
     public function setDuration(array $duration): void
     {
-        $this->execution_time = (int) ($duration['hours'] * 60) + $duration['minutes'];
+        $hours = (!empty($duration['hours'])) ? $duration['hours'] : 0;
+        $minutes = (!empty($duration['minutes'])) ? $duration['minutes'] : 0;
+        $this->execution_time = ($hours * 60) + $minutes;
         $this->type_execution_time = static::TYPE_DURATION_NEW;
     }
 }

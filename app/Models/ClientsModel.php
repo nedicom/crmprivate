@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
  * @property string $email
  * @property string $address
  * @property int $tgid
+ *
+ * @property User $userFunc
  */
 class ClientsModel extends Model
 {

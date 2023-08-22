@@ -44,7 +44,7 @@
                                         <!-- Продолжительность в часах -->
                                         <div class="input-group">
                                             <label class="input-group-text" for="duration_h"><i class="bi bi-stopwatch"></i></label>
-                                            <input type="number" name="duration[hours]"
+                                            <input @cannot('manage-services') readonly @endcannot type="number" name="duration[hours]"
                                                 value="{{ \App\Helpers\TaskHelper::transformDuration($data->duration, $data->type_duration)['hours'] }}" min="0" max="24" step="1" id="duration_h" class="form-control" />
                                             <span class="input-group-text">час</span>
                                         </div>
@@ -53,7 +53,7 @@
                                         <!-- Продолжительность в минутах -->
                                         <div class="input-group">
                                             <label class="input-group-text" for="duration_m"><i class="bi bi-stopwatch"></i></label>
-                                            <input type="number" name="duration[minutes]"
+                                            <input @cannot('manage-services') readonly @endcannot type="number" name="duration[minutes]"
                                                 value="{{ \App\Helpers\TaskHelper::transformDuration($data->duration, $data->type_duration)['minutes'] }}" min="0" max="60" step="1" id="duration_m" class="form-control" />
                                             <span class="input-group-text">мин</span>
                                         </div>
