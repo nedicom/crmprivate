@@ -1,4 +1,4 @@
-<div class="modal fade" id="editModal">
+<div class="modal fade client" id="editModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class ="modal-header">
@@ -43,8 +43,20 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group mb-3 rating-list">
+                        @php $i = 0; @endphp
+                        <label style="display: block">Рейтинг</label>
+                        @foreach (\App\Models\Enums\Clients\Rating::cases() as $rating)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input rating" type="radio" name="rating" id="rating{{ ++$i }}"
+                                    value="{{ lcfirst($rating->name) }}" @if (lcfirst($rating->name) == $data->rating) checked @endif>
+                                <label class="form-check-label" for="rating{{ $i }}">{{ $rating->value }}</label>
+                            </div>
+                        @endforeach
+                    </div>
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="status" id="status" value="1" @if (($data->status) == 1) checked @endif>
+                        <input class="form-check-input status-client" type="checkbox" name="status" id="status" value="1"
+                           @if ($data->status == 1) checked @endif >
                         <label class="form-check-label" for="status">В работе</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Обновить</button>

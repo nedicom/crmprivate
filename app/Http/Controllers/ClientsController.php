@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Enums\Clients\Rating;
 use Illuminate\Http\Request;
 use App\Http\Requests\ClientsRequest;
 use App\Models\ClientsModel;
@@ -78,7 +79,7 @@ class ClientsController extends Controller
     public function update(int $id, ClientsRequest $request)
     {
         $client = ClientsModel::find($id);
-        $client->edit($request);        
+        $client->edit($request);
         if(!$request->status){$client->status = null;};
         $client->save();
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Requests\ClientsRequest;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -19,6 +20,8 @@ use Illuminate\Http\Request;
  * @property int $lawyer
  * @property string $email
  * @property string $address
+ * @property string $rating
+ * @property string $change_status_at Дата переключения статуса в неактивное зн-ие
  * @property int $tgid
  *
  * @property User $userFunc
@@ -43,6 +46,7 @@ class ClientsModel extends Model
         if (!is_null($request->input('email'))) { $client->email = $request->input('email'); }
         if (!is_null($request->input('address'))) { $client->address = $request->input('address'); }
         $client->tgid = rand(0, 1000000);
+        if (!$request->input('status')) $client->change_status_at = Carbon::now()->toDateTimeString();
 
         return $client;
     }
@@ -59,6 +63,7 @@ class ClientsModel extends Model
         if ($request->input('status') == 'выполнена') {
             $this->status = static::STATUS_INACTIVE;
         }
+        if (!$request->input('status')) $this->change_status_at = Carbon::now()->toDateTimeString();
     }
 
     /**

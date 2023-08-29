@@ -1,9 +1,9 @@
-<div class="modal fade" id="myModal">
+<div class="modal fade client" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="{{route('add-client')}}" method="post">
             @csrf
-                <div class ="modal-header">
+                <div class="modal-header">
                     <h2>Добавить клиента</h2>
                 </div>
                 <div class ="modal-body">
@@ -43,10 +43,21 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group mb-3 rating-list">
+                        @php $i = 0; @endphp
+                        <label style="display: block">Рейтинг</label>
+                        @foreach (\App\Models\Enums\Clients\Rating::cases() as $rating)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input rating" type="radio" name="rating" id="rating{{ ++$i }}"
+                                    value="{{ lcfirst($rating->name) }}" @if (lcfirst($rating->name) == 'neutral') checked @endif>
+                                <label class="form-check-label" for="rating{{ $i }}">{{ $rating->value }}</label>
+                            </div>
+                        @endforeach
+                    </div>
                     <div class="form-group mb-3">
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" name="status" id="status" value="1" checked>
-                            <label class="form-check-label" for="flexSwitchCheckDefault">В работе</label>
+                            <input class="form-check-input status-client" type="checkbox" name="status" id="status" value="1" checked>
+                            <label class="form-check-label" for="status">В работе</label>
                         </div>
                     </div>
                 </div>
