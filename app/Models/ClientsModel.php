@@ -113,6 +113,11 @@ class ClientsModel extends Model
         return $this->hasMany(Tasks::class, 'clientid' , 'id');
     }
 
+    public function task()
+    {
+        return $this->hasOne(Tasks::class, 'clientid', 'id');
+    }
+
     /**
      *  Relation Deals
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

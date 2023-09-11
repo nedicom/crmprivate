@@ -5,41 +5,42 @@ namespace App\Repository;
 use App\Models\ClientsModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ClientRepository
 {
     /**
-     * Возвращение коллекции клиентов по статусу ('просрочена', 'в работе', 'ожидают') задач
-     * @param $lawyertask
-     * @param string|null $statusTask
-     * @param string|null $checkedlawyer
+     * Возвращение коллекции клиентов по статусу задач ('просрочена', 'в работе', 'ожидают')
+     * @param int|null $lawyerID ID Юриста
+     * @param string|null $statusTask Статус задачи
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getByStatusTasks($lawyertask, ?string $statusTask, ?string $checkedlawyer)
+    public function getByStatusTasks($lawyerID, ?string $statusTask)
     {
-        $query = ClientsModel::whereHas('tasksFunc', function (Builder $query) use ($lawyertask, $statusTask, $checkedlawyer) {
+        $query = ClientsModel::whereHas('tasksFunc', function (Builder $query) use ($lawyerID, $statusTask) {
             $query->where('status', '=', $statusTask)
-                ->where($checkedlawyer, '=',  $lawyertask);
+                ->where('lawyer', '=',  $lawyerID);
         }, '>=', 1)->get();
 
         return $query;
     }
 
     /**
-     * Возвращение коллекции клиентов по имени клиента и юриста
+     * Возвращение коллекции клиентов по имени клиента для юриста
      * @param Request $request
-     * @param string|null $checkedlawyer
-     * @param $statusclient
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param boolean $adminFlag
+     * @return \Illuminate\Support\Collection
      */
-    public function getByClientAndLawyer(Request $request, ?string $checkedlawyer, $statusclient)
+    public function getByClientByLawyer(Request $request, $adminFlag = false)
     {
-        $query = ClientsModel::where('name', 'like', '%' . $request->findclient . '%')
-            ->where($checkedlawyer, $request->checkedlawyer)
-            ->where($statusclient, $request->status)
-            ->get();
+        //$query = DB::select("select * from clients_models, deals where clients_models.lawyer = ? AND deals.user_id = ? GROUP BY clients_models.id", [2, 2]);
+        $query = ClientsModel::where('name', 'like', '%' . $request->findclient . '%');
+        if ($request->checkedlawyer && $adminFlag) $query->where('lawyer', $request->checkedlawyer);
+        if (!$adminFlag) $query->where('lawyer', Auth::id());
+        $query->where('status', $request->status);
 
-        return $query;
+        return $query->get(); //ClientsModel::hydrate($query);
     }
 
     /**
