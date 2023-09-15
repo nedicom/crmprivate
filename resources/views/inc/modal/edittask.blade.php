@@ -107,11 +107,9 @@
                             <div class="col-4 form-group mb-3">
                                 <label for="type">Тип</label>
                                 <select class="form-select" name="type" id="type">
-                                    <option value="задача" @if ($data->type == "задача") selected @endif >задача</option>
-                                    <option value="заседание" @if ($data->type == "заседание") selected @endif >заседание</option>
-                                    <option value="допрос" @if ($data->type == "допрос") selected @endif >допрос</option>
-                                    <option value="звонок" @if ($data->type == "звонок") selected @endif >звонок</option>
-                                    <option value="консультация" @if ($data->type == "консультация") selected @endif >консультация</option>
+                                    @foreach (\App\Models\Enums\Tasks\Type::cases() as $type)
+                                        <option value="{{ $type->value }}"  @if ($data->type == $type->value) selected @endif>{{ $type->value }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

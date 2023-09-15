@@ -139,27 +139,27 @@
             var checkedvipolnena = this.checked;
 
             $.ajax({
-              method:"POST",
-              url: "{{ route('setstatus') }}",
-              data: { id: id, checkedvipolnena: checkedvipolnena, _token: '{{csrf_token()}}' },
-              success: function(data) {
-                var toast = document.getElementById('toast');
-                var toastbody = document.getElementById('toast-body');
-                  if(data=="true"){
-                  $( toast ).addClass( "show");
-                  $( toastbody ).html("Выполнена!");
-                    setTimeout(function() {
-                        $(toast).removeClass('show');
-                    }, 1000)
-                  }
-                  if(data=="false"){
-                  $( toast ).addClass( "show");
-                  $( toastbody ).html("Ожидает!");
-                    setTimeout(function() {
-                        $(toast).removeClass('show');
-                    }, 1000)
-                  }
-              }
+                method:"POST",
+                url: "{{ route('setstatus') }}",
+                data: { id: id, checkedvipolnena: checkedvipolnena, _token: '{{csrf_token()}}' },
+                success: function(data) {
+                    var toast = document.getElementById('toast');
+                    var toastbody = document.getElementById('toast-body');
+                    if (data=="true"){
+                        $( toast ).addClass( "show");
+                        $( toastbody ).html("Выполнена!");
+                        setTimeout(function() {
+                            $(toast).removeClass('show');
+                        }, 1000)
+                    }
+                    if (data=="false"){
+                        $( toast ).addClass( "show");
+                        $( toastbody ).html("Ожидает!");
+                        setTimeout(function() {
+                            $(toast).removeClass('show');
+                        }, 1000)
+                    }
+                }
             });
         });
        });

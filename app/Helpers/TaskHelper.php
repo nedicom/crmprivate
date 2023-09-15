@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use App\Models\Tasks;
 use App\Repository\TaskRepository;
+use App\Models\Enums\Tasks\Type;
+use App\Models\Enums\Tasks\Status;
 
 class TaskHelper
 {
@@ -55,5 +57,35 @@ class TaskHelper
         }
 
        return $str_time;
+    }
+
+    /**
+     * Стиль элемента в зависимости от типа Задачи
+     * @param string $type
+     * @return string
+     */
+    public static function typeStyle(string $type): string
+    {
+        return match ($type) {
+            Type::Control->value => 'border:3px solid #bfbffc; background-color: lavender;',
+            Type::Sending->value => 'border: 2px solid #57ec00; background-color: #d1ffb6;',
+            default => '',
+        };
+    }
+
+    /**
+     * Ширина сайдбара в зависимости от статуса Задачи
+     * @param string $status
+     * @return string
+     */
+    public static function widthSidebarByStatus(string $status): string
+    {
+        return match ($status) {
+            Status::WAITING->value => 'width: 50%;',
+            Status::IN_WORK->value => 'width: 75%',
+            Status::OVERDUE->value => 'width: 25%;',
+            Status::COMPLETE->value => 'width: 100%;',
+            default => 'width: 100%',
+        };
     }
 }

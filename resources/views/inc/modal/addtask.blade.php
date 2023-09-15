@@ -90,11 +90,9 @@
                             <div class="col-4 form-group mb-3 hideme">
                                 <label for="type">Тип</label>
                                 <select class="form-select" name="type" id="type">
-                                    <option value="задача">задача</option>
-                                    <option value="заседание">заседание</option>
-                                    <option value="допрос">допрос</option>
-                                    <option value="звонок">звонок</option>
-                                    <option value="консультация">консультация</option>
+                                    @foreach (\App\Models\Enums\Tasks\Type::cases() as $type)
+                                        <option value="{{ $type->value }}">{{ $type->value }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-4 form-group mb-3">

@@ -119,14 +119,14 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="">
+                <div>
                     <select class="form-select" name="type" id="type">
                         <option value="" @if (app('request')->input('type') == "") selected @endif >все типы</option>
-                        <option value="задача" @if (app('request')->input('type') == "задача") selected @endif >задача</option>
-                        <option value="заседание" @if (app('request')->input('type') == "заседание") selected @endif >заседание</option>
-                        <option value="допрос" @if (app('request')->input('type') == "допрос") selected @endif >допрос</option>
-                        <option value="звонок" @if (app('request')->input('type') == "звонок") selected @endif >звонок</option>
-                        <option value="консультация" @if (app('request')->input('type') == "консультация") selected @endif >консультация</option>
+                        @foreach (\App\Models\Enums\Tasks\Type::cases() as $type)
+                            <option value="{{ $type->value }}" @if (app('request')->input('type') == $type->value) selected @endif >
+                                {{ $type->value }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="">
@@ -145,32 +145,32 @@
             <div class="row pt-4">
                 <div class="col-3 columncard text-center" id="timeleft">
                     <h5 class="page-title" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Сюда попадают просроченные задачи каждый день в 8.00 утра">просрочка</h5>
-                    @foreach($data as $el)
-                        @if($el -> status == "просрочена")
+                    @foreach ($data as $el)
+                        @if ($el -> status == "просрочена")
                             @include('tasks.taskcard')
                         @endif
                     @endforeach
                 </div>
                 <div class="col-3 columncard text-center" id="waiting">
                     <h5 class="page-title" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Тут задачи которые Вам поставили, но не принятые в работу">ожидает</h5>
-                    @foreach($data as $el)
-                        @if($el -> status == "ожидает")
+                    @foreach ($data as $el)
+                        @if ($el -> status == "ожидает")
                             @include('tasks.taskcard')
                         @endif
                     @endforeach
                 </div>
                 <div class="col-3 columncard text-center" id="inwork">
                     <h5 class="page-title" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Здесь задачи с которыми вы работаете сейчас. Позже будет учитываться время потраченное на выполнение">в работе</h5>
-                    @foreach($data as $el)
-                        @if($el -> status == "в работе")
+                    @foreach ($data as $el)
+                        @if ($el -> status == "в работе")
                             @include('tasks.taskcard')
                         @endif
                     @endforeach
                 </div>
                 <div class="col-3 columncard text-center" id="finished">
                     <h5 class="page-title" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Каждый день в 00.00 выполненные задачи будут пропадать из списка">выполнена</h5>
-                    @foreach($data as $el)
-                        @if(($el -> status == "выполнена") && ($el -> donetime > Carbon\Carbon::today()))
+                    @foreach ($data as $el)
+                        @if (($el -> status == "выполнена") && ($el -> donetime > Carbon\Carbon::today()))
                             @include('tasks.taskcard')
                         @endif
                     @endforeach
