@@ -30,6 +30,8 @@ class ClientsController extends Controller
     public function index(Request $request)
     {
         $lawyerId = (!empty($request->checkedlawyer)) ? $request->checkedlawyer : null;
+        /** @var User $user */
+        $user = Auth::user();
         // Фильтр по статусам задач
         if (!empty($request->statustask)) {
             $statusTask = $request->statustask;
@@ -37,16 +39,16 @@ class ClientsController extends Controller
             return view('clients/clients', [
                 'data' => $this->repository->getByStatusTasks($lawyerId, $statusTask),
             ], [
-                'datalawyers' => User::all(),
+                'datalawyers' => User::active()->get(),
                 'dataservices' => Services::all(),
                 'datatasks' => Tasks::all(),
                 'datasource' => Source::all(),
             ]);
         } else {
             return view('clients/clients', [
-                'data' => $this->repository->getByClientByLawyer($request, Auth::user()->isAdmin()),
+                'data' => $this->repository->getByClientByLawyer($request, ($user->isAdmin() || $user->isModerator())),
             ], [
-                'datalawyers' => User::all(),
+                'datalawyers' => User::active()->get(),
                 'dataservices' => Services::all(),
                 'datasource' => Source::all(),
             ]);
@@ -60,7 +62,7 @@ class ClientsController extends Controller
         return view('clients/clientbyid', [
             'data' => $client,
         ], [
-            'datalawyers' =>  User::all(),
+            'datalawyers' => User::active()->get(),
             'datasource' => Source::all(),
         ]);
     }
@@ -80,7 +82,7 @@ class ClientsController extends Controller
     {
         $client = ClientsModel::find($id);
         $client->edit($request);
-        if(!$request->status){$client->status = null;};
+        if (!$request->status){$client->status = null;};
         $client->save();
 
         return redirect()->route('showClientById', $id)->with('success', 'Все в порядке, клиент обновлен');

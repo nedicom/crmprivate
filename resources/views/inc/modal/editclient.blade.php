@@ -56,7 +56,7 @@
                     </div>
                     <div class="form-check form-switch">
                         <input class="form-check-input status-client" type="checkbox" name="status" id="status" value="1"
-                           @if ($data->status == 1) checked @endif >
+                            @if ($data->status == 1) checked @endif>
                         <label class="form-check-label" for="status">В работе</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Обновить</button>

@@ -42,13 +42,13 @@ class TasksController extends Controller
             return view ('tasks/tasks', [
                 'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek(), $fields),
             ], [
-                'datalawyers' => User::all()
+                'datalawyers' => User::active()->get(),
             ]);
         } else if ($calendar == 'day') {
             return view ('tasks/tasks', [
                 'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfDay(), Carbon::now()->endOfDay(), $fields),
             ], [
-                'datalawyers' =>  User::all()
+                'datalawyers' => User::active()->get(),
             ]);
         } elseif ($calendar == 'month') {
               if ($request->input('months')) { // check number of monts
@@ -59,13 +59,13 @@ class TasksController extends Controller
               return view ('tasks/tasks', [
                   'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfYear()->addMonth($month), Carbon::now()->startOfYear()->addMonth($month + 1), $fields),
               ], [
-                  'datalawyers' =>  User::all()
+                  'datalawyers' => User::active()->get(),
               ]);
         } else {
             return view ('tasks/tasks', [
                 'data' => $this->repository->getAll($fields),
             ], [
-                'datalawyers' =>  User::all()
+                'datalawyers' => User::active()->get(),
             ]);
         }
     }
@@ -133,7 +133,9 @@ class TasksController extends Controller
            $task->save();
         }
 
-        return view('tasks/taskById', ['data' => Tasks::find($request)], ['datalawyers' => User::all()]);
+        return view('tasks/taskById', ['data' => Tasks::find($request)], [
+            'datalawyers' => User::active()->get(),
+        ]);
     }
 
     /**

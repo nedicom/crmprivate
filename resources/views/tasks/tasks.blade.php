@@ -113,8 +113,8 @@
                     <select class="form-select" name="checkedlawyer" id="checkedlawyer">
                         <option value=''>не выбрано</option>
                         @foreach($datalawyers as $el)
-                            <option value="{{$el -> id}}" @if (($el -> id) == (app('request')->input('checkedlawyer'))) selected @endif>
-                                {{$el -> name}}
+                            <option value="{{$el->id}}" @if (($el->id) == (app('request')->input('checkedlawyer'))) selected @endif>
+                                {{$el->name}}
                             </option>
                         @endforeach
                     </select>

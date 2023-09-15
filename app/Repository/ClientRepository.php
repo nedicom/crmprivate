@@ -29,18 +29,17 @@ class ClientRepository
     /**
      * Возвращение коллекции клиентов по имени клиента для юриста
      * @param Request $request
-     * @param boolean $adminFlag
+     * @param boolean $adminRole
      * @return \Illuminate\Support\Collection
      */
-    public function getByClientByLawyer(Request $request, $adminFlag = false)
+    public function getByClientByLawyer(Request $request, $adminRole = false)
     {
-        //$query = DB::select("select * from clients_models, deals where clients_models.lawyer = ? AND deals.user_id = ? GROUP BY clients_models.id", [2, 2]);
         $query = ClientsModel::where('name', 'like', '%' . $request->findclient . '%');
-        if ($request->checkedlawyer && $adminFlag) $query->where('lawyer', $request->checkedlawyer);
-        if (!$adminFlag) $query->where('lawyer', Auth::id());
+        if ($request->checkedlawyer && $adminRole) $query->where('lawyer', $request->checkedlawyer);
+        if (!$adminRole) $query->where('lawyer', Auth::id());
         $query->where('status', $request->status);
 
-        return $query->get(); //ClientsModel::hydrate($query);
+        return $query->get();
     }
 
     /**
