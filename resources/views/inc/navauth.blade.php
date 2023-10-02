@@ -14,12 +14,12 @@
                 <a href="#" data-bs-toggle="dropdown" role="button" aria-expanded="false"
                    class="nav-link dropdown-toggle {{ (request()->is('tasks*')) ? 'active' : '' }}">Задачи</a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{route('tasks')}}?checkedlawyer={{ Auth::user()->id}}">Все события</a></li>
-                    <li><a class="dropdown-item" href="{{route('tasks')}}?checkedlawyer={{ Auth::user()->id}}&type=задача">Задачи</a></li>
-                    <li><a class="dropdown-item" href="{{route('tasks')}}?checkedlawyer={{ Auth::user()->id}}&type=консультация">Консультации</a></li>
-                    <li><a class="dropdown-item" href="{{route('tasks')}}?checkedlawyer={{ Auth::user()->id}}&type=заседание">Заседания</a></li>
-                    <li><a class="dropdown-item" href="{{route('tasks')}}?checkedlawyer={{ Auth::user()->id}}&type=допрос">Допросы</a></li>
-                    <li><a class="dropdown-item" href="{{route('tasks')}}?checkedlawyer={{ Auth::user()->id}}&type=звонок">Звонки</a></li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('tasks', [
+                            'checkedlawyer' => Auth::user()->id,
+                            'calendar' => \App\Models\Enums\Tasks\DateInterval::Today->name
+                        ])}}">Сегодня</a>
+                    </li>
                 </ul>
             </li>
             @can ('manage-services')

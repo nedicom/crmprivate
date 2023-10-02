@@ -30,44 +30,10 @@ class TasksController extends Controller
 
     public function index(Request $request)
     {
-        $lawyerfilter = $typefilter = null;
-        $checkedlawyer = $type = null;
-        $calendar = $request->input('calendar'); // Month, year, day
-        if ($request->input('checkedlawyer')) { $lawyerfilter = 'lawyer'; $checkedlawyer = $request->input('checkedlawyer'); } // Lawyer
-        if ($request->input('type')) { $typefilter = 'type'; $type = $request->input('type'); } // Type
-        $fields = compact('lawyerfilter','checkedlawyer', 'typefilter', 'type');
-
-        // Фильтр по календарю
-        if ($calendar == 'week') {
-            return view ('tasks/tasks', [
-                'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek(), $fields),
-            ], [
-                'datalawyers' => User::active()->get(),
-            ]);
-        } else if ($calendar == 'day') {
-            return view ('tasks/tasks', [
-                'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfDay(), Carbon::now()->endOfDay(), $fields),
-            ], [
-                'datalawyers' => User::active()->get(),
-            ]);
-        } elseif ($calendar == 'month') {
-              if ($request->input('months')) { // check number of monts
-                  $month = ($request->input('months'));
-              } else {
-                  $month = ((Carbon::now()->month) - 1);
-              }
-              return view ('tasks/tasks', [
-                  'data' => $this->repository->getByBetweenDate(Carbon::now()->startOfYear()->addMonth($month), Carbon::now()->startOfYear()->addMonth($month + 1), $fields),
-              ], [
-                  'datalawyers' => User::active()->get(),
-              ]);
-        } else {
-            return view ('tasks/tasks', [
-                'data' => $this->repository->getAll($fields),
-            ], [
-                'datalawyers' => User::active()->get(),
-            ]);
-        }
+        return view('tasks/tasks', [
+            'data' => $this->repository->search($request)->get(),
+            'datalawyers' => User::active()->get(),
+        ]);
     }
 
     /**
@@ -128,12 +94,14 @@ class TasksController extends Controller
     {
         /** @var Tasks $task */
         $task = Tasks::find($request);
+
         if ($task->lawyer == Auth::user()->id) {
            $task->new = $task::STATE_OLD;
            $task->save();
         }
 
-        return view('tasks/taskById', ['data' => Tasks::find($request)], [
+        return view('tasks/taskById', [
+            'data' => Tasks::find($request)], [
             'datalawyers' => User::active()->get(),
         ]);
     }

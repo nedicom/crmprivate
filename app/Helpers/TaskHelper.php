@@ -2,10 +2,12 @@
 
 namespace App\Helpers;
 
+use App\Models\Enums\Tasks\DateInterval;
 use App\Models\Tasks;
 use App\Repository\TaskRepository;
 use App\Models\Enums\Tasks\Type;
 use App\Models\Enums\Tasks\Status;
+use Illuminate\Http\Request;
 
 class TaskHelper
 {
@@ -87,5 +89,58 @@ class TaskHelper
             Status::COMPLETE->value => 'width: 100%;',
             default => 'width: 100%',
         };
+    }
+
+    /**
+     * Список месяцев в форме поиска
+     * @param Request $request
+     * @return string
+     */
+    public static function formListMonths(Request $request): string
+    {
+        $months = [
+            'январь', 'февраль', 'март', 'апрель',
+            'май', 'июнь', 'июль', 'август', 'сентябрь',
+            'октябрь', 'ноябрь', 'декабрь',
+        ];
+        $html = "<select class='form-select' name='months' id='months'>" . PHP_EOL
+            . "<option value=''>не выбрано</option>";
+        foreach ($months as $key => $month) {
+            $selected = ($request->input('months') == $key) ? 'selected' : '';
+            $html .= "<option value='$key' $selected >$month</option>";
+        }
+        $html .= "</select>";
+
+        return $html;
+    }
+
+    /**
+     * Чекбоксбы для выборки интервала времени для формы поиска
+     * @param Request $request
+     * @return string
+     */
+    public static function formCheckDateInterval(Request $request): string
+    {
+        $checkboxes = "";
+        foreach (DateInterval::cases() as $case) {
+            $selected = ($request->input('calendar') == $case->name) ? 'checked' : '';
+            $checkboxes .= "<input type='radio' class='btn-check btn-sm' value='$case->name' name='calendar' id='$case->name' $selected onchange='this.form.submit()'>
+            <label class='btn btn-outline-success btn-sm' for='$case->name'>$case->value</label>" . PHP_EOL;
+        }
+
+        return $checkboxes;
+    }
+
+    /**
+     * Проверка интервала в рамках одного дня
+     * @param Request $request
+     * @return bool
+     */
+    public static function isDayInterval(Request $request): bool
+    {
+        $valPrm = $request->input('calendar');
+
+        return ($valPrm == DateInterval::Day->name || $valPrm == DateInterval::Yesterday->name
+            || $valPrm == DateInterval::Today->name || $valPrm == DateInterval::Tomorrow->name);
     }
 }
