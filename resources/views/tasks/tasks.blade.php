@@ -90,7 +90,7 @@
                     <select class="form-select" name="checkedlawyer" id="checkedlawyer">
                         <option value=''>не выбрано</option>
                         @foreach ($datalawyers as $el)
-                            <option value="{{$el->id}}" @if (($el->id) == ($request->input('checkedlawyer'))) selected @endif>
+                            <option value="{{ $el->id }}" @if ($el->id == $request->input('checkedlawyer')) selected @endif>
                                 {{ $el->name }}
                             </option>
                         @endforeach
@@ -118,7 +118,8 @@
         @php
             $weekMap = [1 => 'Понедельник', 2 => 'Вторник', 3 => 'Среда', 4 => 'Четерг', 5 => 'Пятница', 6 => 'Суббота', 7 => 'Воскресенье'];
         @endphp
-        @if ($request->input('calendar') == '' || $request->input('calendar') == \App\Models\Enums\Tasks\DateInterval::AllTime->name)
+        @if ($request->input('calendar') == '' || $request->input('calendar') == \App\Models\Enums\Tasks\DateInterval::AllTime->name
+            || \App\Helpers\TaskHelper::isDayInterval($request))
             <div class="row pt-4">
                 <div class="col-3 columncard text-center" id="timeleft">
                     <h5 class="page-title" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Сюда попадают просроченные задачи каждый день в 8.00 утра">просрочка</h5>
@@ -202,7 +203,7 @@
             </div>
         @endif
 
-        @if (\App\Helpers\TaskHelper::isDayInterval($request))
+        @if ($request->input('calendar') == \App\Models\Enums\Tasks\DateInterval::Day->name)
             <h2 class=""></h2>
             @for ($i = 8; $i < 22; $i++)
                 <div class='row'>

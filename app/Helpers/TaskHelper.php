@@ -140,7 +140,6 @@ class TaskHelper
     {
         $valPrm = $request->input('calendar');
 
-        return ($valPrm == DateInterval::Day->name || $valPrm == DateInterval::Yesterday->name
-            || $valPrm == DateInterval::Today->name || $valPrm == DateInterval::Tomorrow->name);
+        return ($valPrm == DateInterval::Yesterday->name || $valPrm == DateInterval::Today->name || $valPrm == DateInterval::Tomorrow->name);
     }
 }
