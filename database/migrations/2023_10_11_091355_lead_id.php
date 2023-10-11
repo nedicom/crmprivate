@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('leads', function (Blueprint $table) {
+        /*Schema::table('leads', function (Blueprint $table) {
             $table->unsignedBigInteger('client_id')->nullable()->default(null)->after('source');
         });
         Schema::table('clients_models', function (Blueprint $table) {
@@ -21,7 +21,7 @@ return new class extends Migration
         });
         Schema::table('dogovors', function (Blueprint $table) {
             $table->unsignedBigInteger('lead_id')->nullable()->default(null)->after('name');
-        });
+        });*/
     }
 
     /**
