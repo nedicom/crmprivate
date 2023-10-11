@@ -98,9 +98,6 @@ class LeadsController extends Controller
     public function leadToClient($id, Request $req)
     {
         $lead = Leads::find($id);
-        $lead -> status = 'конвертирован';
-        $lead -> successreason = $req -> input('successreason');
-        $lead -> save();
 
         $client = new ClientsModel();
         $client -> name = $lead -> name;
@@ -109,9 +106,15 @@ class LeadsController extends Controller
         $client -> source = $lead -> source;
         $client -> status = 1;
         $client -> lawyer = $lead -> lawyer;
+        $client -> lead_id = $lead -> id;
         $client -> save();
 
         $clientid = $client -> id;
+
+        $lead -> status = 'конвертирован';
+        $lead -> successreason = $req -> input('successreason');
+        $lead -> client_id =  $clientid;
+        $lead -> save();        
 
         return redirect() -> route('showClientById', $clientid) -> with('success', 'Поздравляем, лид стал клиентом');
     }
