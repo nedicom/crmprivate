@@ -100,32 +100,32 @@ class LeadsController extends Controller
         $lead = Leads::find($id);
 
         $client = new ClientsModel();
-        $client -> name = $lead -> name;
-        $client -> phone = $lead -> phone;
-        $client -> email = 'email';
-        $client -> source = $lead -> source;
-        $client -> status = 1;
-        $client -> lawyer = $lead -> lawyer;
-        $client -> lead_id = $lead -> id;
-        $client -> save();
+        $client->name = $lead -> name;
+        $client->phone = $lead -> phone;
+        $client->email = 'email';
+        $client->source = $lead -> source;
+        $client->status = 1;
+        $client->lawyer = $lead -> lawyer;
+        $client->lead_id = $lead -> id;
+        $client->save();
 
-        $clientid = $client -> id;
+        $clientid = $client->id;
 
-        $lead -> status = 'конвертирован';
-        $lead -> successreason = $req -> input('successreason');
-        $lead -> client_id =  $clientid;
-        $lead -> save();        
+        $lead->status = 'конвертирован';
+        $lead->successreason = $req -> input('successreason');
+        $lead->client_id =  $clientid;
+        $lead->save();
 
-        return redirect() -> route('showClientById', $clientid) -> with('success', 'Поздравляем, лид стал клиентом');
+        return redirect()->route('showClientById', $clientid)->with('success', 'Поздравляем, лид стал клиентом');
     }
 
     public function leadDelete($id, Request $req)
     {
         $lead = Leads::find($id);
-        $lead -> status = 'удален';
-        $lead -> failurereason = $req -> input('failurereason');
-        $lead -> save();
+        $lead->status = 'удален';
+        $lead->failurereason = $req -> input('failurereason');
+        $lead->save();
 
-        return redirect() -> route('leads') -> with('success', 'Все в порядке, лид удален');
+        return redirect()->route('leads') -> with('success', 'Все в порядке, лид удален');
     }
 }
