@@ -84,7 +84,8 @@ class Tasks extends Model
         $task->name = $request->nameoftask;
         $task->clientid = $request->clientidinput;
         $task->deal_id = ($request->deals !== null) ? $request->deals : null;
-        $task->new = static::STATE_NEW;
+        $task->new = (Auth::user()->id == $request->lawyer) ? static::STATE_OLD : static::STATE_NEW;
+        //$task->new = static::STATE_NEW;
         $task->postanovshik = Auth::user()->id;
         $task->status = static::STATUS_WAITING;
         $task->setDuration($request->input('duration'));
