@@ -214,7 +214,7 @@
                         </td>
                     @endif
                     <td class="text-center">
-                        @if (!empty($el->serviceFunc->price))
+                        @if (!empty($el->serviceFunc))
                             {{$el->serviceFunc->price}}
                         @endif
                     </td>
