@@ -213,7 +213,11 @@
                             {{ $el->serviceFunc->name }}
                         </td>
                     @endif
-                    <td class="text-center">{{$el->serviceFunc->price}}</td>
+                    <td class="text-center">
+                        @if (!empty($el->serviceFunc->price))
+                            {{$el->serviceFunc->price}}
+                        @endif
+                    </td>
                     <td class="fw-bold text-center">{{$el->summ}}</td>
                     <td>
                         <span class="badge py-1 px-1

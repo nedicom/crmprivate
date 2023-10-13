@@ -72,27 +72,27 @@ class LeadsController extends Controller
     public function LeadUpdateSubmit($id, LeadsRequest $req)
     {
         $lead = Leads::find($id);
-        $lead -> name = $req -> input('name');
-        $lead -> source = $req -> input('source');
-        $lead -> description = $req -> input('description');
-        $lead -> phone = $req -> input('phone');
-        $lead -> lawyer = $req -> input('lawyer');
-        $lead -> responsible = $req -> input('responsible');
-        $lead -> service = $req -> input('service');
-        $lead -> save();
+        $lead->name = $req -> input('name');
+        $lead->source = $req -> input('source');
+        $lead->description = $req -> input('description');
+        $lead->phone = $req -> input('phone');
+        $lead->lawyer = $req -> input('lawyer');
+        $lead->responsible = $req -> input('responsible');
+        $lead->service = $req -> input('service');
+        $lead->save();
 
-        return redirect() -> route('showLeadById', $id) -> with('success', 'Все в порядке, лид обновлен');
+        return redirect()->route('showLeadById', $id)->with('success', 'Все в порядке, лид обновлен');
     }
 
 
     public function leadToWork($id, Request $req)
     {
         $lead = Leads::find($id);
-        $lead -> status = 'в работе';
-        $lead -> action = $req -> input('action');
-        $lead -> save();
+        $lead->status = 'в работе';
+        $lead->action = $req -> input('action');
+        $lead->save();
 
-        return redirect() -> route('showLeadById', $id) -> with('success', 'Все в порядке, лид в работе');
+        return redirect()->route('showLeadById', $id) -> with('success', 'Все в порядке, лид в работе');
     }
 
     public function leadToClient($id, Request $req)
