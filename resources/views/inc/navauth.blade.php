@@ -25,7 +25,7 @@
             @can ('manage-services')
                 <li class="nav-item"><a href="{{ route('services.index') }}" class="nav-link {{ (request()->is('services*')) ? 'active' : '' }}">Услуги</a></li>
             @endcan
-            <li class="nav-item"><a href="{{ route('payments') }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">Платежи</a></li>
+            <li class="nav-item"><a href="{{ route('payments', ['month' => \Carbon\Carbon::now()->format('m')]) }}" class="nav-link {{ (request()->is('payments*')) ? 'active' : '' }}">Платежи</a></li>
             <li class="nav-item"><a href="{{ route('lawyers') }}" class="nav-link {{ (request()->is('lawyers*')) ? 'active' : '' }}">Юристы</a></li>
             @can ('manage-users')
                 <li class="nav-item"><a href="{{ route('users.index') }}" class="nav-link {{ (request()->is('users/*')) ? 'active' : '' }}">Пользователи</a></li>

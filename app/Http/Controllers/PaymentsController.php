@@ -80,7 +80,7 @@ class PaymentsController extends Controller
                     'data' => $this->repository->searchByAdmin($req)->get()
                 ], [
                     'months' => $months,
-                    'month' => $month, // $req->month)
+                    'month' => $month,
                     'datalawyers' => User::active()->get(),
                     'dataservices' => Services::all(),
                     'dataclients' => ClientsModel::all(),
@@ -90,7 +90,7 @@ class PaymentsController extends Controller
                 'data' => $this->repository->searchByOwner($req)->get()
                 ], [
                     'months' => $months,
-                    'month' => $month, // $req->month
+                    'month' => $month,
                     'datalawyers' => User::active()->get(),
                     'dataservices' => Services::all(),
                     'dataclients' => ClientsModel::all(),
