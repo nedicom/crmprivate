@@ -36,6 +36,12 @@ Route::get('/contacts', function () {return view('contacts');})->middleware('aut
 Route::get('/calendar/create', [\App\Http\Controllers\iCalendar\ManageController::class, 'create'])->name('calendar.create');
 Route::get('/calendar/{userID}/calendar.ics', [\App\Http\Controllers\iCalendar\ManageController::class, 'browse'])->name('calendar.browse');
 
+// Сервис Мои звонки
+Route::post('/mycalls/subscribe/call', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'subscribeCall'])->name('mycalls.subscribe.call');
+Route::post('/mycalls/unsubscribe/call', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'unsubscribeCall'])->name('mycalls.unsubscribe.call');
+Route::post('/mycalls/action/call-start', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'actionCallStart'])->name('mycalls.action.call_start');
+Route::post('/mycalls/action/call-finished', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'actionCallFinished'])->name('mycalls.action.call_finished');
+
 Route::middleware(['auth'])->group(function () {
     Route::controller(LawyersController::class)->group(function () {
         Route::post('/avatar/add', 'addavatar')->name('add-avatar');

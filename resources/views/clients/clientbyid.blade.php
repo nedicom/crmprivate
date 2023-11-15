@@ -23,7 +23,13 @@
     <div class='col-md-6 col-xxl-3 my-3'>
         <div class='card border-light'>
             <div class='d-inline-flex justify-content-end px-2'>
-                @if ($data->status == 1) <i class="bi bi-circle-fill" style = "color: #0acf97;"></i> @else <i class="bi bi-circle-fill text-secondary"></i> @endif
+                @if (isset($data->status))
+                    @if ($data->status == 1)
+                        <i class="bi bi-circle-fill" style = "color: #0acf97;"></i>
+                    @else
+                        <i class="bi bi-circle-fill text-secondary"></i>
+                    @endif
+                @endif
             </div>
             <div class="text-center">
                 <h5 class="mb-2 px-3 text-muted">{{$data->name}}</h5>

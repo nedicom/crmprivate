@@ -36,6 +36,7 @@ class ClientRepository
     {
         $query = ClientsModel::where('name', 'like', '%' . $request->findclient . '%');
         if ($request->checkedlawyer && $adminRole) $query->where('lawyer', $request->checkedlawyer);
+        // Если роль не админ, то список клиентов возвращать только для текущего пользователя
         if (!$adminRole) $query->where('lawyer', Auth::id());
         $query->where('status', $request->status);
 
@@ -50,6 +51,7 @@ class ClientRepository
     public function findById(int $id)
     {
         $query = ClientsModel::with('userFunc', 'tasksFunc', 'serviceFunc', 'paymentsFunc')->find($id);
+
         return $query;
     }
 }

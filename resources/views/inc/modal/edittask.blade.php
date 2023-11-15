@@ -113,6 +113,24 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- Согласовано начальниками -->
+                        <div class="row">
+                            <label>Согласовано</label>
+                            <div class="col-6">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" name="lawyer_agree" id="lawyer_agree"
+                                        @cannot('manage-users') disabled @endcan @if($data->lawyer_agree) checked @endif>
+                                    <label class="form-check-label" for="lawyer_agree">Начальником юр. отдела</label>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" name="sales_agree" id="sales_agree"
+                                        @cannot('manage-users') disabled @endcan @if($data->sales_agree) checked @endif>
+                                    <label class="form-check-label" for="sales_agree">Начальником отдела продаж</label>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Список дел -->
                         <div class="list-deals-block"></div>
                         <!-- Платежи -->

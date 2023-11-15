@@ -48,9 +48,10 @@
                               </a>
                           </div>
                           <div class="px-1 col-3">
-                              <img src="@if ($client->userFunc->avatar){{$client->userFunc->avatar}} @endif" style="width: 30px;  height:30px"
-                                class="rounded-circle" data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="@if ($client->userFunc->name){{$client->userFunc->name}} @endif" />
+                              @if ((!empty($client->userFunc)) && ($client->userFunc->getAvatar() !== null))
+                                  <img src="{{ $client->userFunc->avatar }}" style="width: 30px;  height:30px" class="rounded-circle" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="@if ($client->userFunc->name) {{ $client->userFunc->name }} @endif" />
+                              @endif
                           </div>
                       </div>
                   </div>

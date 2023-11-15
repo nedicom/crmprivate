@@ -25,9 +25,9 @@ class LawyersController extends Controller
         $file = $req->file('avatar');
         $name = $file->hashName();
         $file->move(public_path('/avatars'), $name);
-        $user->avatar = '/avatars/'.$name;
+        $user->avatar = '/avatars/' . $name;
         $user->save();
 
-        return redirect() -> route('home') -> with('success', 'Все в порядке, теперь у Вас сногсшибательный аватар');
+        return redirect()->route('home')->with('success', 'Все в порядке, теперь у Вас сногсшибательный аватар');
     }
 }

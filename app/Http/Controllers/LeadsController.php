@@ -12,21 +12,11 @@ use App\Models\ClientsModel;
 
 class LeadsController extends Controller
 {
-    public function addlead(LeadsRequest $req)
+    public function addlead(LeadsRequest $request)
     {
-        $lead = new Leads();
-        $lead->name = $req->input('name');
-        $lead->source = $req->input('source');
-        $lead->description = $req->input('description');
-        $lead->phone = $req->input('phone');
-        $lead->lawyer = $req->input('lawyer');
-        $lead->responsible = $req->input('responsible');
-        $lead->service = $req->input('service');
-        $lead->status = $req->input('status');
+        $lead = Leads::create($request->all());
 
-        $lead->save();
-
-        return redirect() -> route('leads') -> with('success', 'Все в порядке, лид добавлен');
+        return redirect()->route('leads')->with('success', 'Все в порядке, лид добавлен');
     }
 
     public function showleads(Request $req)

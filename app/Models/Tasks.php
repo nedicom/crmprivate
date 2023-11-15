@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Auth;
  * @property string $description
  * @property \DateTime $donetime
  * @property string $type
+ * @property boolean $lawyer_agree Согласовано нач-ом юр. отдела
+ * @property boolean $sales_agree Согласовано нач-ом отдела продаж
  * @property string $calendar_uid
  * @property boolean $new
  * @property int $deal_id
@@ -89,6 +91,7 @@ class Tasks extends Model
         $task->postanovshik = Auth::user()->id;
         $task->status = static::STATUS_WAITING;
         $task->setDuration($request->input('duration'));
+        $task->setAgreed($request);
 
         return $task;
     }
@@ -108,6 +111,7 @@ class Tasks extends Model
         $task->postanovshik = Auth::user()->id;
         $task->status = static::STATUS_WAITING;
         $task->setDuration($request->input('duration'));
+        $task->setAgreed($request);
 
         return $task;
     }
@@ -123,6 +127,7 @@ class Tasks extends Model
         $this->clientid = $request->clientidinput;
         $this->deal_id = ($request->deals !== null) ? $request->deals : null;
         $this->setDuration($request->input('duration'));
+        $this->setAgreed($request);
     }
 
     /** Устанавливаем значение продоолжительности
@@ -135,6 +140,17 @@ class Tasks extends Model
         $minutes = (!empty($duration['minutes'])) ? $duration['minutes'] : 0;
         $this->duration = ($hours * 60) + $minutes;
         $this->type_duration = static::TYPE_DURATION_NEW;
+    }
+
+    /**
+     * Согласование начальников отделов
+     * @param TasksRequest $request
+     * @return void
+     */
+    public function setAgreed(TasksRequest $request): void
+    {
+        $this->lawyer_agree = ($request->lawyer_agree) ? 1 : 0;
+        $this->sales_agree = ($request->sales_agree) ? 1 : 0;
     }
 
     /**

@@ -65,9 +65,17 @@ class PaymentsController extends Controller
             $this->service->assignTasks($payment, $req->input('taskID'));
         }
 
-        return redirect()->route('payments')->with('success', 'Все в порядке, платеж добавлен');
+        return redirect()->route('payments', [
+            'month' => Carbon::now()->format('m'),
+            'year'  => Carbon::now()->format('Y'),
+        ])->with('success', 'Все в порядке, платеж добавлен');
     }
 
+    /**
+     * Просмотр платежей
+     * @param Request $req
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function showpayments(Request $req)
     {
         /** @var User $user */
@@ -99,7 +107,7 @@ class PaymentsController extends Controller
     }
 
     /**
-     * Summary of showPaymentById
+     * Просмотр платежа
      * @param mixed $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
@@ -164,14 +172,25 @@ class PaymentsController extends Controller
             $this->service->assignTasks($payment, $req->input('taskID'));
         }
 
-        return redirect()->route('showPaymentById', $id)->with('success', 'Все в порядке, платеж обновлен');
+        return redirect()->route('payments', [
+            'month' => Carbon::now()->format('m'),
+            'year'  => Carbon::now()->format('Y'),
+        ])->with('success', 'Все в порядке, платеж обновлен');
     }
 
+    /**
+     * Удаление платежа
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function PaymentDelete($id)
     {
         Payments::find($id)->delete();
 
-        return redirect()->route('payments')->with('success', 'Все в порядке, платеж удален');
+        return redirect()->route('payments', [
+            'month' => Carbon::now()->format('m'),
+            'year'  => Carbon::now()->format('Y'),
+        ])->with('success', 'Все в порядке, платеж удален');
     }
 
     /**
