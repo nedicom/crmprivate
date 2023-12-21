@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int $service_id
  *
  * @property Services|null $service
+ * @property User $performer Исполнитель задачи
  */
 class Tasks extends Model
 {
@@ -153,6 +154,24 @@ class Tasks extends Model
         $this->sales_agree = ($request->sales_agree) ? 1 : 0;
     }
 
+    /** Проверка просрочена ли задача при включенной согласованности начальником юр. отдела
+     * @return bool
+     */
+    public function isOverdueAtDepartment(): bool
+    {
+        return $this->lawyer_agree == 1
+            && Carbon::parse($this->date['value'])->addMinutes($this->duration) <= Carbon::parse()->toDateTimeString()
+            && Auth::user()->role == User::ROLE_USER;
+    }
+
+    /** Проверка при включенной согласованности начальником юр. отдела
+     * @return bool
+     */
+    public function isAtDepartment(): bool
+    {
+        return $this->lawyer_agree == 1 && Auth::user()->role == User::ROLE_USER;
+    }
+
     /**
      * Inversion relation Deal
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -182,5 +201,10 @@ class Tasks extends Model
     public function payments()
     {
         return $this->belongsToMany(Payments::class, 'task_payment_assigns', 'task_id', 'payment_id');
+    }
+
+    public function performer()
+    {
+        return $this->belongsTo(User::class, 'lawyer', 'id');
     }
 }
