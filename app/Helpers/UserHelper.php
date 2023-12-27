@@ -34,4 +34,10 @@ class UserHelper
 
         return $status;
     }
+
+    /** Форматирование номера телефона */
+    public static function formatPhone(array $phones): array
+    {
+        return preg_replace(['/^(\+|[0-8]+|\s)+/', '/([\s|\(|\)|-]+)+/'], '', $phones);
+    }
 }

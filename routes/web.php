@@ -37,10 +37,11 @@ Route::get('/calendar/create', [\App\Http\Controllers\iCalendar\ManageController
 Route::get('/calendar/{userID}/calendar.ics', [\App\Http\Controllers\iCalendar\ManageController::class, 'browse'])->name('calendar.browse');
 
 // Сервис Мои звонки
-Route::post('/mycalls/subscribe/call', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'subscribeCall'])->name('mycalls.subscribe.call');
-Route::post('/mycalls/unsubscribe/call', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'unsubscribeCall'])->name('mycalls.unsubscribe.call');
+Route::post('/mycalls/subscribe/call', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'subscribeTrackingCalls'])->name('mycalls.subscribe.call');
+Route::post('/mycalls/unsubscribe/call', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'unsubscribeTrackingCalls'])->name('mycalls.unsubscribe.call');
 Route::post('/mycalls/action/call-start', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'actionCallStart'])->name('mycalls.action.call_start');
 Route::post('/mycalls/action/call-finished', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'actionCallFinished'])->name('mycalls.action.call_finished');
+Route::post('/mycalls/download-log', [\App\Http\Controllers\ServicesApi\MyCallsController::class, 'downloadLogFile'])->name('mycalls.download_log');
 
 Route::middleware(['auth'])->group(function () {
     Route::controller(LawyersController::class)->group(function () {

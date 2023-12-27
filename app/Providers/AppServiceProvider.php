@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         Http::macro('myCalls', function () {
-            return Http::baseUrl('https://homesc.moizvonki.ru/api/v1')->acceptJson();
+            return Http::baseUrl('https://nedicom.moizvonki.ru/api/v1')->acceptJson();
         });
     }
 }

@@ -31,23 +31,32 @@
 
 @section('main')
     <div class="row">
-        <div class="px-3 col-8 pb-3">
-            <h5>Сервис Мои звонки</h5>
-            <div class="row">
-                <div class="col-3">
-                    <form action="{{ route('mycalls.subscribe.call') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">Подписаться на события</button>
-                    </form>
-                </div>
-                <div class="col-3">
-                    <form action="{{ route('mycalls.unsubscribe.call') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">Отписаться от событий</button>
-                    </form>
+        @can('manage-users')
+            <div class="px-3 col-8 pb-3">
+                <h5>Сервис Мои звонки</h5>
+                <div class="row">
+                    <div class="col-3">
+                        <form action="{{ route('mycalls.subscribe.call') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Подписаться на события</button>
+                        </form>
+                    </div>
+                    <div class="col-3">
+                        <form action="{{ route('mycalls.unsubscribe.call') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Отписаться от событий</button>
+                        </form>
+                    </div>
+                    <!-- Для теста -->
+                    <div class="col-3">
+                        <form action="{{ route('mycalls.download_log') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Скачать логи</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endcan
         <div class="col-4">
             <div class="mb-2">
                 @if($user->tg_id)

@@ -123,7 +123,7 @@ class Tasks extends Model
      */
     public function edit(TasksRequest $request): void
     {
-        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', '_token']));
+        $this->fill($request->except(['nameoftask', 'clientidinput', 'deals', 'payID', 'payClient', 'lawyer_agree', 'sales_agree', '_token']));
         $this->name = $request->nameoftask;
         $this->clientid = $request->clientidinput;
         $this->deal_id = ($request->deals !== null) ? $request->deals : null;
@@ -150,8 +150,8 @@ class Tasks extends Model
      */
     public function setAgreed(TasksRequest $request): void
     {
-        $this->lawyer_agree = ($request->lawyer_agree) ? 1 : 0;
-        $this->sales_agree = ($request->sales_agree) ? 1 : 0;
+        if ($request->lawyer_agree !== null) $this->lawyer_agree = ($request->lawyer_agree) ? 1 : 0;
+        if ($request->sales_agree !== null) $this->sales_agree = ($request->sales_agree) ? 1 : 0;
     }
 
     /** Проверка просрочена ли задача при включенной согласованности начальником юр. отдела
