@@ -54,7 +54,7 @@ class LeadService
                 if ($currentPhone === $phone)
                     return $id;
         } else {
-            throw new \InvalidArgumentException('Таблицы с таким именем не существует в БД.');
+            throw new \DomainException('Таблицы с таким именем не существует в БД.');
         }
 
         return null;

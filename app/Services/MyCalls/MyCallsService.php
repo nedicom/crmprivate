@@ -21,7 +21,7 @@ class MyCallsService
             'action' => 'webhook.subscribe',
             'hooks' => [
                 //'call.start' => 'https://example.com/mycalls/action/call-start',
-                'call.finish' => 'https://1e54-46-63-141-19.ngrok-free.app/mycalls/action/call-finished',
+                'call.finish' => 'https://crm.nedicom.ru/mycalls/action/call-finished',
             ],
         ]);
         /** @var Response $response */
