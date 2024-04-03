@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $client_id // ID Клиента
  * @property int $user_id // ID Юриста
  */
+
 class Deal extends Model
 {
     const STATUS_ACTIVE = 1;

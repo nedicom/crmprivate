@@ -115,7 +115,8 @@
                                 <div class="px-3">
                                     <select class="form-select form-select-sm" name="year">
                                         <option value="2022">2022</option>
-                                        <option value="2023" selected>2023</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024" selected>2024</option>
                                     </select>
                                 </div>
                                 <div class="px-3">

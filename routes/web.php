@@ -115,6 +115,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', \App\Http\Controllers\UsersController::class);
     Route::post('/users/{user}/verify', 'UsersController@verify')->name('users.verify');
     Route::put('/users/{user}/change-password', [\App\Http\Controllers\UsersController::class, 'changePassword'])->name('users.change-password');
+
+    // Генерация документов
+    Route::post('generate/cert-completion/{client}', [\App\Http\Controllers\GenerateDocumentController::class, 'certificateCompletion'])->name('client.generate.document');
 });
 
 Route::post('/getclient', [GetclientAJAXController::class, 'getclient'])->name('getclient')->middleware('auth');
